@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     }
     else{
         NSLog(@"input data from tunnel: %d",self.port);
-        printHexData(data);
+        //printHexData(data);
     }
     
     printHexData(data);

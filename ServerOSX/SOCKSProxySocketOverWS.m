@@ -94,11 +94,11 @@ static const int ddLogLevel = DDLogLevelOff;
 
 - (void) websocketSession:(WebsocketSession *)session didReadData:(NSData *)data withTag:(long)tag
 {
-    NSLog(@"read data from tunnel %d:",session.port);
+    NSLog(@"read %d bytes from tunnel %d:",data.length,session.port);
     if (tag >= 10400) {
     }
     else{
-        printHexData(data);
+        //printHexData(data);
     }
     
     

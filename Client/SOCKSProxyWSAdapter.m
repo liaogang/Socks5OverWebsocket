@@ -95,8 +95,8 @@ static const int ddLogLevel = DDLogLevelOff;
 
 -(void)websocketSession:(WebsocketSession *)sock didReadData:(NSData *)data withTag:(long)tag
 {
-    NSLog(@"read data from tunnel %d:",sock.port);
-    printHexData(data);
+    NSLog(@"read %lu bytes from tunnel %d:",(unsigned long)data.length,sock.port);
+    //printHexData(data);
     
     
     if (tag == SOCKS_OPEN) {
