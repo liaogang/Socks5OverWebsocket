@@ -14,13 +14,15 @@
 
 @protocol WebsocketSessionDelegate <NSObject>
 @required;
-- (void) WebsocketSession:(WebsocketSession *)session didReadData:(NSData *)data withTag:(long)tag;
+- (void) websocketSession:(WebsocketSession *)session didReadData:(NSData *)data withTag:(long)tag;
 
-- (void) WebsocketSession:(WebsocketSession *)session didWriteData:(NSData *)data withTag:(long)tag;
+- (void) websocketSession:(WebsocketSession *)session didWriteData:(NSData *)data withTag:(long)tag;
 @end
 
 
 @interface WebsocketSession : NSObject
+
+-(instancetype)init NS_UNAVAILABLE;
 
 -(instancetype)initWithMyPSWebSocket:(MyPSWebSocket*)parent;
 

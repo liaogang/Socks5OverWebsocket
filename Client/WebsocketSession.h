@@ -21,7 +21,9 @@
 
 @interface WebsocketSession : NSObject
 
--(instancetype)initWithMyPSWebSocket:(WebsocketAdapter*)parent;
+-(instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithParent:(WebsocketAdapter*)parent;
 
 @property (nonatomic ) uint16_t port;
 

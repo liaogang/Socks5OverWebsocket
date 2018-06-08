@@ -16,7 +16,7 @@ void printBufferToHex(Byte *buffer,int length)
         str = [str stringByAppendingFormat:@" %02x", buffer[i] ];
     }
     
-    NSLog(@"reveived: %@",str);
+    NSLog(@"%@",str);
 }
 
 void printHexData(NSData *data)

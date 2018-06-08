@@ -27,6 +27,15 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 @end
 
 @implementation WebsocketSession
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSAssert(false, @"");
+    }
+    return self;
+}
 -(instancetype)initWithMyPSWebSocket:(MyPSWebSocket*)parent
 {
     self = [super init];
@@ -41,8 +50,6 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 {
     [self.cache appendData:data];
     
-    
-    
     [self tryReader];
 }
 
@@ -51,7 +58,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     NSUInteger cacheLength = self.cache.length ;
     if (readerType == Length) {
         if (cacheLength == readerLength) {
-            [self.delegate WebsocketSession:self didReadData:self.cache withTag: readerTag ];
+            [self.delegate websocketSession:self didReadData:self.cache withTag: readerTag ];
             self.cache = [NSMutableData data];
             [self resetReader];
         }
@@ -61,7 +68,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
             
             self.cache = [[self.cache subdataWithRange: NSMakeRange(readerLength, cacheLength - readerLength)] mutableCopy];
             
-            [self.delegate WebsocketSession:self didReadData:data withTag: readerTag ];
+            [self.delegate websocketSession:self didReadData:data withTag: readerTag ];
             [self resetReader];
         }
         else{
@@ -72,7 +79,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     }
     else if(readerType == OneTime){
         
-        [self.delegate WebsocketSession:self didReadData:self.cache withTag: readerTag ];
+        [self.delegate websocketSession:self didReadData:self.cache withTag: readerTag ];
         self.cache = [NSMutableData data];
         
         [self resetReader];
@@ -119,8 +126,11 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 -(void)writeData:(NSData*)data withTag:(long)tag
 {
+    NSLog(@"write tunnel %d: ",self.port);
+    printHexData(data);
+    
     [_parent sendData:data bySession:self];
-    [self.delegate WebsocketSession:self didWriteData:data withTag:tag];
+    [self.delegate websocketSession:self didWriteData:data withTag:tag];
 }
 
 @end

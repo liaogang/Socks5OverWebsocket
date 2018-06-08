@@ -83,14 +83,27 @@
         }
     }];
 #endif
-    SOCKSProxySocketOverWS *proxySocket = [[SOCKSProxySocketOverWS alloc] initWithSocket:newSocket delegate:self];
-    [self.activeSockets addObject:proxySocket];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(socksProxy:clientDidConnect:)]) {
-        dispatch_async(self.callbackQueue, ^{
-            [self.delegate socksProxy:self clientDidConnect:proxySocket];
-        });
+    //todo change
+    static int i = 0;
+    i++;
+    if (i==1) {
+        
+        SOCKSProxySocketOverWS *proxySocket = [[SOCKSProxySocketOverWS alloc] initWithSocket:newSocket delegate:self];
+        [self.activeSockets addObject:proxySocket];
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(socksProxy:clientDidConnect:)]) {
+            dispatch_async(self.callbackQueue, ^{
+                [self.delegate socksProxy:self clientDidConnect:proxySocket];
+            });
+        }
+        
     }
+    else{
+        
+    }
+    
+    
 }
 
 - (NSUInteger) connectionCount {

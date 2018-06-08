@@ -8,6 +8,8 @@
 
 #import "WebsocketSession.h"
 #import "WebsocketAdapter.h"
+#import "SOCKSProxyWSAdapter.h"
+#import "PrintHex.h"
 
 typedef NS_ENUM(NSUInteger, ReaderType) {
     Invalide,
@@ -18,14 +20,15 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 @interface WebsocketSession ()
 {
-    
-    
     ReaderType readerType;
     NSUInteger readerLength;
     long readerTag;
 }
 @property (nonatomic, strong) NSMutableData *cache;
 @property (nonatomic, weak) WebsocketAdapter *parent;
+
+
+@property (nonatomic,strong) SOCKSProxyWSAdapter *adapter;
 @end
 
 @implementation WebsocketSession
@@ -35,31 +38,61 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     if (self) {
         _parent = parent;
         
-               self.cache = [NSMutableData data];
+        self.cache = [NSMutableData data];
+        
+        self.adapter = [[SOCKSProxyWSAdapter alloc] initWithWebSocket:self delegate: nil ];
         
     }
     return self;
 }
 
+-(void)inputData:(NSData*)data
+{
+    NSLog(@"input data from tunnel: %d,%d",self.port,[NSThread currentThread].isMainThread);
+    printHexData(data);
+    
+    [self.cache appendData:data];
+    
+    [self tryReader];
+}
 
+-(void)disconnect
+{
+    
+}
 
-
-
-
-
-
-
-
+-(void)disconnectAfterWriting
+{
+    
+}
 
 -(void)tryReader{
+    
+    NSLog(@"try reader: %d",[NSThread currentThread].isMainThread);
+    
+    NSLog(@"tunnel %d, try reader, type: %lu, length:%lu,tag: %ld",self.port,(unsigned long)readerType,(unsigned long)readerLength,readerTag);
+    
+    if (readerTag == 10200) {
+        NSLog(@"");
+    }
     
     NSUInteger cacheLength = self.cache.length ;
     if (readerType == Length) {
         
-        if (cacheLength == readerLength) {
-            [self.delegate websocketSession:self didReadData:self.cache withTag: readerTag ];
+        NSLog(@"cache length:  %lu,reader length: %lu",(unsigned long)cacheLength,(unsigned long)readerLength);
+        
+        if ( cacheLength == readerLength) {
+            
+            NSLog(@"cacheLength == readerLength: delegate:%p",self.delegate);
+            
+            NSData *copy = [self.cache copy];
             self.cache = [NSMutableData data];
             [self resetReader];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate websocketSession:self didReadData:copy withTag: readerTag ];
+            });
+            
         }
         else if ( cacheLength > readerLength) {
             
@@ -67,6 +100,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
             
             self.cache = [[self.cache subdataWithRange: NSMakeRange(readerLength, cacheLength - readerLength)] mutableCopy];
             
+            NSLog(@"cacheLength > readerLength: delegate: %@",self.delegate);
             [self.delegate websocketSession:self didReadData:data withTag: readerTag ];
             [self resetReader];
         }
@@ -81,6 +115,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
         [self.delegate websocketSession:self didReadData:self.cache withTag: readerTag ];
         self.cache = [NSMutableData data];
         
+        NSLog(@"resetReader one time ");
         [self resetReader];
     }
     
@@ -93,8 +128,12 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     [self readDataToLength:length tag:tag];
 }
 
-- (void)readDataToLength:(NSUInteger)length tag:(long)tag
+-(void)readDataToLength:(NSUInteger)length tag:(long)tag
 {
+    NSLog(@"readDataToLength: %d,%d, %d",self.port,length, [NSThread currentThread].isMainThread);
+    
+    
+    
     readerType = Length;
     readerLength = length;
     readerTag = tag;
@@ -103,14 +142,18 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 
 -(void)resetReader{
+    NSLog(@"resetReader");
     readerType = None;
     readerLength = 0;
 }
 
 - (void)readDataWithTag:(long)tag
 {
+    NSLog(@"readData One Time");
+    
     readerType = OneTime;
     readerLength = 0;
+    readerTag = tag;
 }
 
 
@@ -121,6 +164,9 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 -(void)writeData:(NSData*)data withTag:(long)tag
 {
+    NSLog(@"write data to tunnel: %d",self.port);
+    printHexData(data);
+    
     [_parent sendData:data bySession:self];
     [self.delegate websocketSession:self didWriteData:data withTag:tag];
 }

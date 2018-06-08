@@ -33,6 +33,8 @@
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import "PSWebSocket.h"
 #import "WebsocketSession.h"
+#import "PrintHex.h"
+
 
 #if DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;
@@ -93,7 +95,14 @@ static const int ddLogLevel = DDLogLevelOff;
 
 -(void)websocketSession:(WebsocketSession *)sock didReadData:(NSData *)data withTag:(long)tag
 {
+    NSLog(@"read data from tunnel %d:",sock.port);
+    printHexData(data);
+    
+    
     if (tag == SOCKS_OPEN) {
+        
+        NSLog(@"Tag: SOCKS_OPEN");
+        
         /*
          The initial greeting from the client is
          
@@ -135,6 +144,9 @@ static const int ddLogLevel = DDLogLevelOff;
             }
         }
     } else if (tag == SOCKS_CONNECT_AUTH_INIT) {
+        
+        NSLog(@"Tag: SOCKS_CONNECT_AUTH_INIT");
+        
         // We don't actually bother checking user/pass
         /*
          For username/password authentication the client's authentication request is
@@ -159,6 +171,9 @@ static const int ddLogLevel = DDLogLevelOff;
             [sock readDataToLength:usernameLength+1 withTimeout:-1 tag:SOCKS_CONNECT_AUTH_USERNAME];
         }
     } else if (tag == SOCKS_CONNECT_AUTH_USERNAME) {
+        
+        NSLog(@"Tag: SOCKS_CONNECT_AUTH_USERNAME");
+        
         if (data.length >= 2) {
             NSData *usernameData = [data subdataWithRange:NSMakeRange(0, data.length - 1)];
             NSString *usernameString = [[NSString alloc] initWithData:usernameData encoding:NSUTF8StringEncoding];
@@ -173,6 +188,7 @@ static const int ddLogLevel = DDLogLevelOff;
             }
         }
     } else if (tag == SOCKS_CONNECT_AUTH_PASSWORD) {
+        NSLog(@"Tag: SOCKS_CONNECT_AUTH_PASSWORD");
         NSString *passwordString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         uint8_t success[2] = {0x01, 0x00};
         uint8_t failure[2] = {0x01, 0x00};
@@ -188,6 +204,7 @@ static const int ddLogLevel = DDLogLevelOff;
         }
         self.username = nil;
     } else if (tag == SOCKS_CONNECT_INIT) {
+        NSLog(@"Tag: SOCKS_CONNECT_INIT");
         //      +-----+-----+-----+------+------+------+
         // NAME | VER | CMD | RSV | ATYP | ADDR | PORT |
         //      +-----+-----+-----+------+------+------+
@@ -212,23 +229,28 @@ static const int ddLogLevel = DDLogLevelOff;
             [sock readDataToLength:16 withTimeout:-1 tag:SOCKS_CONNECT_IPv6];
         }
     } else if (tag == SOCKS_CONNECT_IPv4) {
+        NSLog(@"Tag: SOCKS_CONNECT_IPv4");
         uint8_t *address = malloc(INET_ADDRSTRLEN * sizeof(uint8_t));
         inet_ntop(AF_INET, data.bytes, (char*) address, INET_ADDRSTRLEN);
         _destinationHost = [[NSString alloc] initWithBytesNoCopy:address length:INET_ADDRSTRLEN encoding:NSUTF8StringEncoding freeWhenDone:YES];
         [sock readDataToLength:2 withTimeout:TIMEOUT_CONNECT tag:SOCKS_CONNECT_PORT];
     } else if (tag == SOCKS_CONNECT_IPv6) {
+        NSLog(@"Tag: SOCKS_CONNECT_IPv6");
         uint8_t *address = malloc(INET6_ADDRSTRLEN * sizeof(uint8_t));
         inet_ntop(AF_INET6, data.bytes, (char*) address, INET6_ADDRSTRLEN);
         _destinationHost = [[NSString alloc] initWithBytesNoCopy:address length:INET6_ADDRSTRLEN encoding:NSUTF8StringEncoding freeWhenDone:YES];
         [sock readDataToLength:2 withTimeout:TIMEOUT_CONNECT tag:SOCKS_CONNECT_PORT];
     } else if (tag == SOCKS_CONNECT_DOMAIN) {
+        NSLog(@"Tag: SOCKS_CONNECT_DOMAIN");
         _destinationHost = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
         [sock readDataToLength:2 withTimeout:TIMEOUT_CONNECT tag:SOCKS_CONNECT_PORT];
     } else if (tag == SOCKS_CONNECT_DOMAIN_LENGTH) {
+        NSLog(@"Tag: SOCKS_CONNECT_DOMAIN_LENGTH");
         uint8_t *bytes = (uint8_t*)data.bytes;
         uint8_t addressLength = bytes[0];
         [sock readDataToLength:addressLength withTimeout:TIMEOUT_CONNECT tag:SOCKS_CONNECT_DOMAIN];
     } else if (tag == SOCKS_CONNECT_PORT) {
+        NSLog(@"Tag: SOCKS_CONNECT_PORT");
         uint16_t rawPort;
         memcpy(&rawPort, [data bytes], 2);
         _destinationPort = NSSwapBigShortToHost(rawPort);
@@ -304,6 +326,7 @@ static const int ddLogLevel = DDLogLevelOff;
         
         [self.outgoingSocket connectToHost:self.destinationHost onPort:self.destinationPort error:&error];
     } else if (tag == SOCKS_INCOMING_READ) {
+        NSLog(@"Tag: SOCKS_INCOMING_READ");
         [self.outgoingSocket writeData:data withTimeout:-1 tag:SOCKS_OUTGOING_WRITE];
         [self.outgoingSocket readDataWithTimeout:-1 tag:SOCKS_OUTGOING_READ];
         
@@ -325,6 +348,10 @@ static const int ddLogLevel = DDLogLevelOff;
 
 
 - (void) socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
+    
+    NSLog(@"data from Internet -> outgoing socket");
+    printHexData(data);
+    
      if (tag == SOCKS_OUTGOING_READ) {
         
         [self.proxySocket writeData:data withTag:SOCKS_INCOMING_WRITE];

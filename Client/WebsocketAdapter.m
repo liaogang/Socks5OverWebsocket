@@ -30,6 +30,8 @@
         inner = inner_;
         inner.delegate = self;
 
+        self.sessions = [NSMutableDictionary dictionary];
+        
     }
     return self;
 }
@@ -46,34 +48,55 @@
 }
 
 
-
-
 #pragma mark - SRWebSocketDelegate
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket;
 {
     NSLog(@"Websocket Connected");
-    
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message
 {
     NSData *data = message;
-    
-    //printHexData(data);
+
     
     uint16_t rawPort ;
     memcpy(&rawPort, [data bytes], 2);
     uint16_t destinationPort = NSSwapBigShortToHost(rawPort);
     
     
+    //just test toto
+    if (destinationPort == 0) {
+        
+    }
+    else{
+        return;
+    }
     
-    NSData *sessionData = [data subdataWithRange:NSMakeRange(2, data.length)];
+    
+    NSData *sessionData = [data subdataWithRange:NSMakeRange(2, data.length - 2)];
+    
+    
     
     WebsocketSession *session = [self findSessionByPort:destinationPort];
+    if (session) {
+        [session inputData:sessionData];
+    }
+    else{
+        
+        WebsocketSession *newSession = [[WebsocketSession alloc] initWithParent:self];
+        newSession.port = destinationPort;
+ 
+        self.sessions[@(destinationPort)] = newSession;
+        
+        [newSession inputData:sessionData];
+    }
     
-    [session inputData:sessionData];
+    
 }
+
+
+
 
 
 -(WebsocketSession *)findSessionByPort:(uint16_t)port

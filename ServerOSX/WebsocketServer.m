@@ -15,6 +15,10 @@
 <PSWebSocketServerDelegate>
 @property (nonatomic, strong) PSWebSocketServer *server;
 @property (nonatomic,strong) SOCKSProxyOverWebsocket *socksServer;
+
+@property (nonatomic,strong) NSMutableSet<MyPSWebSocket*>* devices;
+//@property (nonatomic,strong) PSWebSocket * client;
+
 @end
 
 @implementation WebsocketServer
@@ -38,8 +42,9 @@
         self.server = [PSWebSocketServer serverWithHost:@"0.0.0.0" port:9091];
         self.server.delegate = self;
         [self.server start];
+       
         
-        
+        self.devices = [NSMutableSet set];
     }
     return self;
 }
@@ -47,7 +52,7 @@
 
 -(MyPSWebSocket*)pickOneDevice
 {
-    return [[MyPSWebSocket alloc] initWithInner: self.client];
+    return self.devices.anyObject;
 }
 
 
@@ -71,7 +76,10 @@
 - (void)server:(PSWebSocketServer *)server webSocketDidOpen:(PSWebSocket *)webSocket {
     NSLog(@"webSocketDidOpen");
     
-    self.client = webSocket;
+    MyPSWebSocket *device = [[MyPSWebSocket alloc] initWithInner: webSocket ];
+    [self.devices addObject:device];
+    
+    
 }
 
 - (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didReceiveMessage:(id)message {

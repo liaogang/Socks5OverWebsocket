@@ -23,9 +23,9 @@
     UIBackgroundTaskIdentifier bgTask;
 }
 @property (nonatomic,strong) SRWebSocket *webSocket;
+@property (nonatomic,strong) WebsocketAdapter *adapter;
 @property (nonatomic,strong) NSUUID *UUID;
 @property (nonatomic,strong) NSTimer *timer;
-@property (nonatomic,strong) SOCKSProxyWSAdapter *adapter;
 @end
 
 @implementation AYFlowMgr
@@ -150,10 +150,7 @@
         //NSURL *url = [[NSURL alloc] initWithString:@"ws://192.168.0.146:9001"];
         self.webSocket = [[SRWebSocket alloc] initWithURL:url];
         
-        WebsocketAdapter *adapter = [[WebsocketAdapter alloc] initWithWebSocket:self.webSocket];
-        
-        self.adapter = [[SOCKSProxyWSAdapter alloc] initWithWebSocket:adapter delegate:self];
-        
+        self.adapter = [[WebsocketAdapter alloc] initWithWebSocket:self.webSocket];
         
         NSLog(@"to connect websocket server");
         [self.webSocket open];

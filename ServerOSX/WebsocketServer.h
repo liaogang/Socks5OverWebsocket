@@ -14,7 +14,6 @@
 +(instancetype)shared;
 -(instancetype)init NS_UNAVAILABLE;
 
-@property (nonatomic,strong) PSWebSocket * client;
 
 -(MyPSWebSocket*)pickOneDevice;
 

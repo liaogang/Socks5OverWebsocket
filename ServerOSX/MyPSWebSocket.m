@@ -76,9 +76,12 @@
 
 -(WebsocketSession*)newConnectToRemote
 {
-    WebsocketSession *session = [WebsocketSession new];
+    WebsocketSession *session = [[WebsocketSession alloc] initWithMyPSWebSocket: self];
     session.port =  portBegin;
+    self.sessions[@(portBegin)] = session;
+    
     portBegin++;
+    
     return session;
 }
 
@@ -94,13 +97,11 @@
     uint16_t destinationPort = NSSwapBigShortToHost(rawPort);
     
     
-    
-    NSData *sessionData = [data subdataWithRange:NSMakeRange(2, data.length)];
+    NSData *sessionData = [data subdataWithRange:NSMakeRange(2, data.length - 2)];
     
     WebsocketSession *session = [self findSessionByPort:destinationPort];
     
     [session inputData:sessionData];
-
 }
 
 
@@ -116,5 +117,8 @@
     
 }
 
-
+- (void)webSocketDidFlushOutput:(PSWebSocket *)webSocket
+{
+    
+}
 @end

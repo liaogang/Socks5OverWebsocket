@@ -35,7 +35,7 @@
 #import "WebsocketServer.h"
 #import "MyPSWebSocket.h"
 #import "WebsocketSession.h"
-
+#import "PrintHex.h"
 
 #if DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;
@@ -91,8 +91,12 @@ static const int ddLogLevel = DDLogLevelOff;
 #pragma mark - WebsocketSesionDelegate
 
 //outgoing_read
-- (void) websocketSesion:(WebsocketSession *)session didReadData:(NSData *)data withTag:(long)tag
+
+- (void) websocketSession:(WebsocketSession *)session didReadData:(NSData *)data withTag:(long)tag
 {
+    NSLog(@"read data from tunnel %d:",session.port);
+    printHexData(data);
+    
     [self.proxySocket writeData:data withTimeout:-1 tag:SOCKS_INCOMING_WRITE];
     [self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
     [self.outgoingSocket readDataWithTimeout:-1 tag:SOCKS_OUTGOING_READ];
@@ -107,14 +111,14 @@ static const int ddLogLevel = DDLogLevelOff;
 }
 
 
-- (void) websocketSesion:(WebsocketSession *)session didWriteData:(NSData *)data withTag:(long)tag
+- (void) websocketSession:(WebsocketSession *)session didWriteData:(NSData *)data withTag:(long)tag
 {
-    
+   // NSLog(@"did write");
+    //printHexData(data);
 }
 
 - (void) socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
-    
-    printHexData(data);
+
     
     
     [self.outgoingSocket writeData:data withTimeout:-1 tag:SOCKS_OUTGOING_WRITE];
