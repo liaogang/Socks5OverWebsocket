@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "AYFlowMgr.h"
+
 
 @interface AppDelegate ()
 
@@ -16,7 +18,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    [AYFlowMgr shared];
+    
     return YES;
 }
 

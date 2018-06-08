@@ -1,5 +1,5 @@
 //
-//  SOCKSProxySocket.m
+//  SOCKSProxySocketOverWS.m
 //  Tether
 //
 //  Created by Christopher Ballinger on 11/26/13.
@@ -29,8 +29,11 @@
 #define TIMEOUT_READ          5.00
 #define TIMEOUT_TOTAL        80.00
 
-#import "SOCKSProxySocket.h"
+#import "SOCKSProxySocketOverWS.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import "PSWebSocket.h"
+#import "WebSocketServer.h"
+
 
 #if DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;
@@ -39,26 +42,29 @@ static const int ddLogLevel = DDLogLevelOff;
 #endif
 #include <arpa/inet.h>
 
-@interface SOCKSProxySocket()
+@interface SOCKSProxySocketOverWS()
 @property (nonatomic, strong) GCDAsyncSocket *proxySocket;
 @property (nonatomic, strong) GCDAsyncSocket *outgoingSocket;
+
+@property (nonatomic,strong) PSWebSocket *outgoingWebsocket;
+
 @property (nonatomic) dispatch_queue_t delegateQueue;
 @property (nonatomic) NSUInteger totalBytesWritten;
 @property (nonatomic) NSUInteger totalBytesRead;
 @property (nonatomic, strong) NSString *username;
 @end
 
-@implementation SOCKSProxySocket
+@implementation SOCKSProxySocketOverWS
 
 - (void) dealloc {
     [self disconnect];
 }
 
-- (id) initWithSocket:(GCDAsyncSocket *)socket delegate:(id<SOCKSProxySocketDelegate>)delegate {
+- (id) initWithSocket:(GCDAsyncSocket *)socket delegate:(id<SOCKSProxySocketOverWSDelegate>)delegate {
     if (self = [super init]) {
         _delegate = delegate;
-        self.delegateQueue = dispatch_queue_create("SOCKSProxySocket socket delegate queue", 0);
-        self.callbackQueue = dispatch_queue_create("SOCKSProxySocket callback queue", 0);
+        self.delegateQueue = dispatch_queue_create("SOCKSProxySocketOverWS socket delegate queue", 0);
+        self.callbackQueue = dispatch_queue_create("SOCKSProxySocketOverWS callback queue", 0);
         self.proxySocket = socket;
         self.proxySocket.delegate = self;
         self.proxySocket.delegateQueue = self.delegateQueue;
@@ -216,7 +222,78 @@ static const int ddLogLevel = DDLogLevelOff;
         memcpy(&rawPort, [data bytes], 2);
         _destinationPort = NSSwapBigShortToHost(rawPort);
         NSError *error = nil;
-        [self.outgoingSocket connectToHost:self.destinationHost onPort:self.destinationPort error:&error];
+        
+        self.outgoingWebsocket = [WebsocketServer shared].client;
+        
+        
+        
+       	//      +-----+-----+-----+------+------+------+
+        // NAME | VER | CMD | RSV | ATYP | ADDR | PORT |
+        //      +-----+-----+-----+------+------+------+
+        // SIZE |  1  |  1  |  1  |  1   | var  |  2   |
+        //      +-----+-----+-----+------+------+------+
+        //
+        // Note: Size is in bytes
+        //
+        // Version      = 5 (for SOCKS5)
+        // Command      = 1 (for Connect)
+        // Reserved     = 0
+        // Address Type = 3 (1=IPv4, 3=DomainName 4=IPv6)
+        // Address      = P:D (P=LengthOfDomain D=DomainWithoutNullTermination)
+        // Port         = 0
+        
+        NSUInteger hostLength = [self.destinationHost length];
+        NSData *hostData = [self.destinationHost dataUsingEncoding:NSUTF8StringEncoding];
+        NSUInteger byteBufferLength = (uint)(4 + 1 + hostLength + 2);
+        uint8_t *byteBuffer = malloc(byteBufferLength * sizeof(uint8_t));
+        NSUInteger offset = 0;
+        
+        // VER
+        uint8_t version = 0x05;
+        byteBuffer[0] = version;
+        offset++;
+        
+        /* CMD
+         o  CONNECT X'01'
+         o  BIND X'02'
+         o  UDP ASSOCIATE X'03'
+         */
+        uint8_t command = 0x01;
+        byteBuffer[offset] = command;
+        offset++;
+        
+        byteBuffer[offset] = 0x00; // Reserved, must be 0
+        offset++;
+        /* ATYP
+         o  IP V4 address: X'01'
+         o  DOMAINNAME: X'03'
+         o  IP V6 address: X'04'
+         */
+        uint8_t addressType = 0x03;
+        byteBuffer[offset] = addressType;
+        offset++;
+        /* ADDR
+         o  X'01' - the address is a version-4 IP address, with a length of 4 octets
+         o  X'03' - the address field contains a fully-qualified domain name.  The first
+         octet of the address field contains the number of octets of name that
+         follow, there is no terminating NUL octet.
+         o  X'04' - the address is a version-6 IP address, with a length of 16 octets.
+         */
+        byteBuffer[offset] = hostLength;
+        offset++;
+        memcpy(byteBuffer+offset, [hostData bytes], hostLength);
+        offset+=hostLength;
+        uint16_t port = htons(self.destinationPort);
+        NSUInteger portLength = 2;
+        memcpy(byteBuffer+offset, &port, portLength);
+        offset+=portLength;
+        
+        NSData *data = [NSData dataWithBytesNoCopy:byteBuffer length:byteBufferLength freeWhenDone:YES];
+        DDLogVerbose(@"TURNSocket: SOCKS_CONNECT: %@", data);
+        
+        [_outgoingWebsocket send: data ];
+        
+        //[self.outgoingSocket connectToHost:self.destinationHost onPort:self.destinationPort error:&error];
     } else if (tag == SOCKS_INCOMING_READ) {
         [self.outgoingSocket writeData:data withTimeout:-1 tag:SOCKS_OUTGOING_WRITE];
         [self.outgoingSocket readDataWithTimeout:-1 tag:SOCKS_OUTGOING_READ];

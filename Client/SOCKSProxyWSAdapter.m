@@ -1,5 +1,5 @@
 //
-//  SOCKSProxySocket.m
+//  SOCKSProxyWSAdapter.m
 //  Tether
 //
 //  Created by Christopher Ballinger on 11/26/13.
@@ -29,8 +29,10 @@
 #define TIMEOUT_READ          5.00
 #define TIMEOUT_TOTAL        80.00
 
-#import "SOCKSProxySocket.h"
+#import "SOCKSProxyWSAdapter.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import "PSWebSocket.h"
+#import "WebsocketSession.h"
 
 #if DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;
@@ -39,29 +41,37 @@ static const int ddLogLevel = DDLogLevelOff;
 #endif
 #include <arpa/inet.h>
 
-@interface SOCKSProxySocket()
-@property (nonatomic, strong) GCDAsyncSocket *proxySocket;
+@interface SOCKSProxyWSAdapter()
+<WebsocketSessionDelegate>
+@property (nonatomic, strong) WebsocketSession *proxySocket;
 @property (nonatomic, strong) GCDAsyncSocket *outgoingSocket;
+
+//@property (nonatomic,strong) PSWebSocket *outgoingWebsocket;
+
 @property (nonatomic) dispatch_queue_t delegateQueue;
 @property (nonatomic) NSUInteger totalBytesWritten;
 @property (nonatomic) NSUInteger totalBytesRead;
 @property (nonatomic, strong) NSString *username;
+
+
 @end
 
-@implementation SOCKSProxySocket
+@implementation SOCKSProxyWSAdapter
 
 - (void) dealloc {
     [self disconnect];
 }
 
-- (id) initWithSocket:(GCDAsyncSocket *)socket delegate:(id<SOCKSProxySocketDelegate>)delegate {
+- (id) initWithWebSocket:(WebsocketSession *)proxySocket delegate:(id<SOCKSProxyWSAdapterDelegate>)delegate {
     if (self = [super init]) {
         _delegate = delegate;
-        self.delegateQueue = dispatch_queue_create("SOCKSProxySocket socket delegate queue", 0);
-        self.callbackQueue = dispatch_queue_create("SOCKSProxySocket callback queue", 0);
-        self.proxySocket = socket;
+        self.delegateQueue = dispatch_queue_create("SOCKSProxyWSAdapter socket delegate queue", 0);
+        self.callbackQueue = dispatch_queue_create("SOCKSProxyWSAdapter callback queue", 0);
+        
+        self.proxySocket = proxySocket;
         self.proxySocket.delegate = self;
-        self.proxySocket.delegateQueue = self.delegateQueue;
+
+        
         self.outgoingSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:self.delegateQueue];
         [self socksOpen];
     }
@@ -75,7 +85,14 @@ static const int ddLogLevel = DDLogLevelOff;
     self.outgoingSocket = nil;
 }
 
-- (void) socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
+
+
+-(void)websocketSession:(WebsocketSession *)session didWriteData:(NSData *)data withTag:(long)tag{
+    
+}
+
+-(void)websocketSession:(WebsocketSession *)sock didReadData:(NSData *)data withTag:(long)tag
+{
     if (tag == SOCKS_OPEN) {
         /*
          The initial greeting from the client is
@@ -138,7 +155,7 @@ static const int ddLogLevel = DDLogLevelOff;
             uint8_t *bytes = (uint8_t*)data.bytes;
             uint8_t version = bytes[0];
             uint8_t usernameLength = bytes[1];
-            DDLogVerbose(@"AUTH version %d. Reading username...", version);
+            NSLog(@"AUTH version %d. Reading username...", version);
             [sock readDataToLength:usernameLength+1 withTimeout:-1 tag:SOCKS_CONNECT_AUTH_USERNAME];
         }
     } else if (tag == SOCKS_CONNECT_AUTH_USERNAME) {
@@ -146,12 +163,12 @@ static const int ddLogLevel = DDLogLevelOff;
             NSData *usernameData = [data subdataWithRange:NSMakeRange(0, data.length - 1)];
             NSString *usernameString = [[NSString alloc] initWithData:usernameData encoding:NSUTF8StringEncoding];
             self.username = usernameString;
-            DDLogVerbose(@"AUTH username %@", usernameString);
+            NSLog(@"AUTH username %@", usernameString);
             NSData *passwordLengthData = [data subdataWithRange:NSMakeRange(data.length - 1, 1)];
             if (passwordLengthData.length == 1) {
                 uint8_t *passwordLengthBytes = (uint8_t*)passwordLengthData.bytes;
                 uint8_t passwordLength = passwordLengthBytes[0];
-                DDLogVerbose(@"Reading password of length %d...", passwordLength);
+                NSLog(@"Reading password of length %d...", passwordLength);
                 [sock readDataToLength:passwordLength withTimeout:-1 tag:SOCKS_CONNECT_AUTH_PASSWORD];
             }
         }
@@ -216,11 +233,85 @@ static const int ddLogLevel = DDLogLevelOff;
         memcpy(&rawPort, [data bytes], 2);
         _destinationPort = NSSwapBigShortToHost(rawPort);
         NSError *error = nil;
+        
+        
+        
+        
+       	//      +-----+-----+-----+------+------+------+
+        // NAME | VER | CMD | RSV | ATYP | ADDR | PORT |
+        //      +-----+-----+-----+------+------+------+
+        // SIZE |  1  |  1  |  1  |  1   | var  |  2   |
+        //      +-----+-----+-----+------+------+------+
+        //
+        // Note: Size is in bytes
+        //
+        // Version      = 5 (for SOCKS5)
+        // Command      = 1 (for Connect)
+        // Reserved     = 0
+        // Address Type = 3 (1=IPv4, 3=DomainName 4=IPv6)
+        // Address      = P:D (P=LengthOfDomain D=DomainWithoutNullTermination)
+        // Port         = 0
+        
+        NSUInteger hostLength = [self.destinationHost length];
+        NSData *hostData = [self.destinationHost dataUsingEncoding:NSUTF8StringEncoding];
+        NSUInteger byteBufferLength = (uint)(4 + 1 + hostLength + 2);
+        uint8_t *byteBuffer = malloc(byteBufferLength * sizeof(uint8_t));
+        NSUInteger offset = 0;
+        
+        // VER
+        uint8_t version = 0x05;
+        byteBuffer[0] = version;
+        offset++;
+        
+        /* CMD
+         o  CONNECT X'01'
+         o  BIND X'02'
+         o  UDP ASSOCIATE X'03'
+         */
+        uint8_t command = 0x01;
+        byteBuffer[offset] = command;
+        offset++;
+        
+        byteBuffer[offset] = 0x00; // Reserved, must be 0
+        offset++;
+        /* ATYP
+         o  IP V4 address: X'01'
+         o  DOMAINNAME: X'03'
+         o  IP V6 address: X'04'
+         */
+        uint8_t addressType = 0x03;
+        byteBuffer[offset] = addressType;
+        offset++;
+        /* ADDR
+         o  X'01' - the address is a version-4 IP address, with a length of 4 octets
+         o  X'03' - the address field contains a fully-qualified domain name.  The first
+         octet of the address field contains the number of octets of name that
+         follow, there is no terminating NUL octet.
+         o  X'04' - the address is a version-6 IP address, with a length of 16 octets.
+         */
+        byteBuffer[offset] = hostLength;
+        offset++;
+        memcpy(byteBuffer+offset, [hostData bytes], hostLength);
+        offset+=hostLength;
+        uint16_t port = htons(self.destinationPort);
+        NSUInteger portLength = 2;
+        memcpy(byteBuffer+offset, &port, portLength);
+        offset+=portLength;
+        
+        NSData *data = [NSData dataWithBytesNoCopy:byteBuffer length:byteBufferLength freeWhenDone:YES];
+        NSLog(@"TURNSocket: SOCKS_CONNECT: %@", data);
+        
+        
         [self.outgoingSocket connectToHost:self.destinationHost onPort:self.destinationPort error:&error];
     } else if (tag == SOCKS_INCOMING_READ) {
         [self.outgoingSocket writeData:data withTimeout:-1 tag:SOCKS_OUTGOING_WRITE];
         [self.outgoingSocket readDataWithTimeout:-1 tag:SOCKS_OUTGOING_READ];
-        [self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
+        
+        [self.proxySocket readDataWithTag:SOCKS_INCOMING_READ];
+        //[self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
+        
+        
+        
         NSUInteger dataLength = data.length;
         self.totalBytesWritten += dataLength;
         if (self.delegate && [self.delegate respondsToSelector:@selector(proxySocket:didWriteDataOfLength:)]) {
@@ -228,9 +319,19 @@ static const int ddLogLevel = DDLogLevelOff;
                 [self.delegate proxySocket:self didWriteDataOfLength:dataLength];
             });
         }
-    } else if (tag == SOCKS_OUTGOING_READ) {
-        [self.proxySocket writeData:data withTimeout:-1 tag:SOCKS_INCOMING_WRITE];
-        [self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
+    }
+}
+
+
+
+- (void) socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
+     if (tag == SOCKS_OUTGOING_READ) {
+        
+        [self.proxySocket writeData:data withTag:SOCKS_INCOMING_WRITE];
+        [self.proxySocket readDataWithTag:SOCKS_INCOMING_READ];
+        
+        //[self.proxySocket writeData:data withTimeout:-1 tag:SOCKS_INCOMING_WRITE];
+        //[self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
         [self.outgoingSocket readDataWithTimeout:-1 tag:SOCKS_OUTGOING_READ];
         NSUInteger dataLength = data.length;
         self.totalBytesRead += dataLength;
@@ -255,7 +356,9 @@ static const int ddLogLevel = DDLogLevelOff;
 	// Version    = 5 (for SOCKS5)
 	// NumMethods = 1
 	// Method     = 0 (No authentication, anonymous access)
-    [self.proxySocket readDataToLength:3 withTimeout:TIMEOUT_CONNECT tag:SOCKS_OPEN];
+    //[self.proxySocket readDataToLength:3 withTimeout:TIMEOUT_CONNECT tag:SOCKS_OPEN];
+    
+    [self.proxySocket readDataToLength:3 tag:SOCKS_OPEN];
 }
 
 - (void) socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err {
@@ -286,8 +389,13 @@ static const int ddLogLevel = DDLogLevelOff;
     NSUInteger portLength = 2;
 	memcpy(responseBytes+5+hostLength, &bigEndianPort, portLength);
     NSData *responseData = [NSData dataWithBytesNoCopy:responseBytes length:responseLength freeWhenDone:YES];
-    [self.proxySocket writeData:responseData withTimeout:-1 tag:SOCKS_CONNECT_REPLY];
-    [self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
+    
+    
+    [self.proxySocket writeData:responseData withTag:SOCKS_CONNECT_REPLY];
+    [self.proxySocket readDataWithTag:SOCKS_INCOMING_READ];
+    
+    //[self.proxySocket writeData:responseData withTimeout:-1 tag:SOCKS_CONNECT_REPLY];
+    //[self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
 }
 
 @end

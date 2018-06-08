@@ -10,20 +10,20 @@
 #import <CocoaAsyncSocket/GCDAsyncSocket.h>
 #import "SOCKSProxySocket.h"
 
-@class SOCKSProxy;
+@class SOCKSProxyOverWebsocket;
 
-@protocol SOCKSProxyDelegate <NSObject>
-- (void) socksProxy:(SOCKSProxy*)socksProxy clientDidConnect:(SOCKSProxySocket*)clientSocket;
-- (void) socksProxy:(SOCKSProxy*)socksProxy clientDidDisconnect:(SOCKSProxySocket*)clientSocket;
+@protocol SOCKSProxyOverWebsocketDelegate <NSObject>
+- (void) socksProxy:(SOCKSProxyOverWebsocket*)socksProxy clientDidConnect:(SOCKSProxySocket*)clientSocket;
+- (void) socksProxy:(SOCKSProxyOverWebsocket*)socksProxy clientDidDisconnect:(SOCKSProxySocket*)clientSocket;
 @end
 
 /**
  *  SOCKS proxy server implementation.
  */
-@interface SOCKSProxy : NSObject <GCDAsyncSocketDelegate, SOCKSProxySocketDelegate>
+@interface SOCKSProxyOverWebsocket : NSObject <GCDAsyncSocketDelegate, SOCKSProxySocketDelegate>
 
 @property (nonatomic, readonly) uint16_t listeningPort;
-@property (nonatomic, weak) id<SOCKSProxyDelegate> delegate;
+@property (nonatomic, weak) id<SOCKSProxyOverWebsocketDelegate> delegate;
 @property (nonatomic) dispatch_queue_t callbackQueue;
 @property (nonatomic, readonly) NSUInteger connectionCount;
 
