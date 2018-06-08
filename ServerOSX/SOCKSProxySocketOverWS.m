@@ -95,7 +95,12 @@ static const int ddLogLevel = DDLogLevelOff;
 - (void) websocketSession:(WebsocketSession *)session didReadData:(NSData *)data withTag:(long)tag
 {
     NSLog(@"read data from tunnel %d:",session.port);
-    printHexData(data);
+    if (tag >= 10400) {
+    }
+    else{
+        printHexData(data);
+    }
+    
     
     [self.proxySocket writeData:data withTimeout:-1 tag:SOCKS_INCOMING_WRITE];
     [self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];

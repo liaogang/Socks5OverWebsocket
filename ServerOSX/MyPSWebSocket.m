@@ -19,7 +19,6 @@
     PSWebSocket *inner;
     
     uint16_t portBegin;
-
 }
 
 
@@ -87,9 +86,9 @@
 
 - (void)webSocket:(PSWebSocket *)webSocket didReceiveMessage:(id)message
 {
-    NSLog(@"didReceiveMessage");
     NSData *data = message;
     
+    NSLog(@"didReceiveMessage: %d bytes",data.length);
     //printHexData(data);
    
     uint16_t rawPort ;

@@ -347,12 +347,12 @@ static const int ddLogLevel = DDLogLevelOff;
 
 
 
-- (void) socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
+- (void) socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
+{
+    NSLog(@"%lu bytes data from Internet -> outgoing socket",(unsigned long)data.length);
     
-    NSLog(@"data from Internet -> outgoing socket");
-    printHexData(data);
     
-     if (tag == SOCKS_OUTGOING_READ) {
+    if (tag == SOCKS_OUTGOING_READ) {
         
         [self.proxySocket writeData:data withTag:SOCKS_INCOMING_WRITE];
         [self.proxySocket readDataWithTag:SOCKS_INCOMING_READ];

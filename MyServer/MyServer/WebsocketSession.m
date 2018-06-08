@@ -57,32 +57,43 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     
     NSUInteger cacheLength = self.cache.length ;
     if (readerType == Length) {
+        
         if (cacheLength == readerLength) {
-            [self.delegate websocketSession:self didReadData:self.cache withTag: readerTag ];
+        
+            NSData *temp = [self.cache copy];
             self.cache = [NSMutableData data];
+            
+            NSUInteger tag = readerTag;
             [self resetReader];
+            
+            
+            [self.delegate websocketSession:self didReadData:temp withTag: tag ];
         }
         else if ( cacheLength > readerLength) {
             
             NSData *data = [self.cache subdataWithRange:NSMakeRange(0, readerLength)];
-            
             self.cache = [[self.cache subdataWithRange: NSMakeRange(readerLength, cacheLength - readerLength)] mutableCopy];
-            
-            [self.delegate websocketSession:self didReadData:data withTag: readerTag ];
+            NSUInteger tag = readerTag;
             [self resetReader];
+            
+            [self.delegate websocketSession:self didReadData:data withTag: tag ];
         }
         else{
-            
-            
+            //wait more data coming
         }
         
     }
     else if(readerType == OneTime){
         
-        [self.delegate websocketSession:self didReadData:self.cache withTag: readerTag ];
-        self.cache = [NSMutableData data];
         
+        NSData *data = [self.cache copy];
+        self.cache = [NSMutableData data];
+        NSUInteger tag = readerTag;
         [self resetReader];
+        
+        
+        [self.delegate websocketSession:self didReadData:data withTag: tag ];
+        
     }
     
     
@@ -116,8 +127,8 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 {
     readerType = OneTime;
     readerLength = 0;
+    readerTag = tag;
 }
-
 
 - (void) writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag
 {
@@ -126,8 +137,13 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 -(void)writeData:(NSData*)data withTag:(long)tag
 {
-    NSLog(@"write tunnel %d: ",self.port);
-    printHexData(data);
+    NSLog(@"write %lu bytes tunnel %d: ",(unsigned long)data.length,self.port);
+    if (tag >= 10400) {
+    }
+    else{
+        printHexData(data);
+    }
+    
     
     [_parent sendData:data bySession:self];
     [self.delegate websocketSession:self didWriteData:data withTag:tag];

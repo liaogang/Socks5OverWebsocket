@@ -64,14 +64,7 @@
     memcpy(&rawPort, [data bytes], 2);
     uint16_t destinationPort = NSSwapBigShortToHost(rawPort);
     
-    
-    //just test toto
-    if (destinationPort == 0) {
-        
-    }
-    else{
-        return;
-    }
+
     
     
     NSData *sessionData = [data subdataWithRange:NSMakeRange(2, data.length - 2)];
