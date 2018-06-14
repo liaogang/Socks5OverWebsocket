@@ -149,4 +149,13 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     [self.delegate websocketSession:self didWriteData:data withTag:tag];
 }
 
+-(void)createRemoteSession
+{
+    [_parent createRemoteSessionbySession:self];
+}
+
+-(void)disconnect
+{
+    [self.parent toCloseSession:self];
+}
 @end

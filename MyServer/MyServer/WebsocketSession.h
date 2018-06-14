@@ -28,6 +28,8 @@
 
 @property (nonatomic ) uint16_t port;
 
+-(void)createRemoteSession;
+
 -(void)inputData:(NSData*)data;
 
 @property (nonatomic,strong) id<WebsocketSessionDelegate> delegate;
@@ -35,5 +37,7 @@
 - (void) writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag ;
 - (void) readDataWithTimeout:(NSTimeInterval)timeout tag:(long)tag ;
 - (void)readDataToLength:(NSUInteger)length withTimeout:(NSTimeInterval)timeout tag:(long)tag;
+
+-(void)disconnect;
 
 @end

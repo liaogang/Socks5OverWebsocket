@@ -11,6 +11,10 @@
 #import "WebsocketSession.h"
 
 
+#define CMD_CLOSE   0x00
+#define CMD_Create  0x01
+#define CMD_Forward 0x10
+
 
 
 @interface WebsocketAdapter ()
@@ -59,32 +63,39 @@
 {
     NSData *data = message;
 
-    
+    uint8_t cmd;
+    memcpy(&cmd, [data bytes], 1);
+
     uint16_t rawPort ;
-    memcpy(&rawPort, [data bytes], 2);
+    memcpy(&rawPort, [data bytes]+1, 2);
     uint16_t destinationPort = NSSwapBigShortToHost(rawPort);
     
-
     
+    NSData *sessionData = [data subdataWithRange:NSMakeRange(3, data.length - 3)];
     
-    NSData *sessionData = [data subdataWithRange:NSMakeRange(2, data.length - 2)];
-    
-    
-    
-    WebsocketSession *session = [self findSessionByPort:destinationPort];
-    if (session) {
-        [session inputData:sessionData];
-    }
-    else{
-        
+    if (cmd == CMD_Create )
+    {
         WebsocketSession *newSession = [[WebsocketSession alloc] initWithParent:self];
         newSession.port = destinationPort;
- 
+        
         self.sessions[@(destinationPort)] = newSession;
         
         [newSession inputData:sessionData];
+        
     }
-    
+    else if( cmd == CMD_Forward )
+    {
+        WebsocketSession *session = [self findSessionByPort:destinationPort];
+        [session inputData:sessionData];
+    }
+    else if( cmd == CMD_CLOSE )
+    {
+        WebsocketSession *session = [self findSessionByPort:destinationPort];
+        [self closeSession:session];
+    }
+    else{
+        NSLog(@"Error unknown cmd");
+    }
     
 }
 
@@ -118,15 +129,37 @@
 
 -(void)sendData:(NSData*)data bySession:(WebsocketSession*)session
 {
+    uint8_t cmd = CMD_Forward;
+    
     uint16_t port = htons(session.port);
-    NSUInteger portLength = 2;
     
-    
-    NSMutableData *temp = [[NSMutableData alloc] initWithBytes:&port length: portLength ];
+    NSMutableData *temp = [NSMutableData data];
+    [temp appendBytes:&cmd length: 1];
+    [temp appendBytes:&port length:2];
     [temp appendData:data];
     
     [inner send:temp];
 }
+
+
+-(void)closeSession:(WebsocketSession*)session
+{
+    uint8_t cmd = CMD_CLOSE;
+    
+    uint16_t port = htons(session.port);
+    
+    NSMutableData *temp = [NSMutableData data];
+    [temp appendBytes:&cmd length: 1];
+    [temp appendBytes:&port length:2];
+    
+    [inner send:temp];
+    
+    
+    [self.sessions removeObjectForKey:@(session.port)];
+    
+}
+
+
 
 
 @end

@@ -17,6 +17,10 @@
 
 -(WebsocketSession*)newConnectToRemote;
 
+-(void)createRemoteSessionbySession:(WebsocketSession*)session;
+
 -(void)sendData:(NSData*)data bySession:(WebsocketSession*)session;
+
+-(void)toCloseSession:(WebsocketSession*)session;
 
 @end

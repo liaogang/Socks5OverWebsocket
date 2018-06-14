@@ -74,7 +74,7 @@ static const int ddLogLevel = DDLogLevelOff;
         
         self.outgoingSocket = [[[WebsocketServer shared] pickOneDevice] newConnectToRemote];
         self.outgoingSocket.delegate = self;
-        
+        [self.outgoingSocket createRemoteSession];
         
         [self socksOpen];
     }
@@ -83,7 +83,7 @@ static const int ddLogLevel = DDLogLevelOff;
 
 - (void) disconnect {
     [self.proxySocket disconnect];
-    //[self.outgoingSocket disconnect];
+    [self.outgoingSocket disconnect];
     self.proxySocket = nil;
     self.outgoingSocket = nil;
 }
@@ -400,6 +400,8 @@ static const int ddLogLevel = DDLogLevelOff;
             [self.delegate proxySocketDidDisconnect:self withError:err];
         });
     }
+    
+    [self.outgoingSocket disconnect];
 }
 
 - (void) socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {

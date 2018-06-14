@@ -18,4 +18,6 @@
 
 -(void)sendData:(NSData*)data bySession:(WebsocketSession*)session;
 
+-(void)closeSession:(WebsocketSession*)session;
+
 @end

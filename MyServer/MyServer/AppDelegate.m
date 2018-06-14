@@ -19,21 +19,17 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
-    //start socks server
-    //self.socksServer = [[SOCKSProxy alloc] init];
-    //    [self.socksServer addAuthorizedUser:@"lg" password:@"123123123"];
-    //[self.socksServer startProxyOnPort: 8050 ];
+    //start socks5 server　at 9090
     self.socksServer = [[SOCKSProxyOverWebsocket alloc] init];
     [self.socksServer startProxyOnPort:9090];
     
-    [WebsocketServer shared]; //9091
+    //websocket server at 9091
+    [WebsocketServer shared];
 }
 
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
 }
-
-
 
 @end
