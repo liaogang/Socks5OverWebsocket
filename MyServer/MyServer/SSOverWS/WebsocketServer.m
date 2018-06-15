@@ -13,11 +13,12 @@
 
 @interface WebsocketServer ()
 <PSWebSocketServerDelegate>
+
 @property (nonatomic, strong) PSWebSocketServer *server;
+
 @property (nonatomic,strong) SOCKSProxyOverWebsocket *socksServer;
 
 @property (nonatomic,strong) NSMutableSet<MyPSWebSocket*>* devices;
-//@property (nonatomic,strong) PSWebSocket * client;
 
 @end
 
@@ -78,7 +79,6 @@
     
     MyPSWebSocket *device = [[MyPSWebSocket alloc] initWithInner: webSocket ];
     [self.devices addObject:device];
-    
     
 }
 

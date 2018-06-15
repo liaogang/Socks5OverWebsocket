@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <CocoaAsyncSocket/GCDAsyncSocket.h>
-#import "PSWebSocket.h"
 #import "WebsocketAdapter.h"
 
 
@@ -24,6 +23,7 @@ checkAuthorizationForUser:(NSString*)username
             password:(NSString*)password;
 @end
 
+
 @interface SOCKSProxyWSAdapter : NSObject <GCDAsyncSocketDelegate>
 
 @property (nonatomic, readonly) uint16_t destinationPort;
@@ -35,7 +35,7 @@ checkAuthorizationForUser:(NSString*)username
 
 - (void) disconnect;
 
-//- (id) initWithSocket:(GCDAsyncSocket*)socket delegate:(id<SOCKSProxyWSAdapterDelegate>)delegate;
 - (id) initWithWebSocket:(WebsocketSession *)proxySocket delegate:(id<SOCKSProxyWSAdapterDelegate>)delegate ;
 
 @end
+

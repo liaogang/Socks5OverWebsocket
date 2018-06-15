@@ -11,7 +11,6 @@
 #import "WebsocketSession.h"
 
 #define CMD_CLOSE   0x00
-#define CMD_CLOSED   0x00
 #define CMD_Create  0x01
 #define CMD_Forward 0x10
 
@@ -108,7 +107,7 @@
 {
     NSData *data = message;
     
-    NSLog(@"didReceiveMessage: %d bytes",data.length);
+    NSLog(@"didReceiveMessage: %lu bytes",(unsigned long)data.length);
     //printHexData(data);
    
     uint8_t cmd;
@@ -119,7 +118,7 @@
     uint16_t destinationPort = NSSwapBigShortToHost(rawPort);
     
     
-    if (cmd == CMD_CLOSED ) {
+    if (cmd == CMD_CLOSE ) {
         WebsocketSession *session = [self findSessionByPort:destinationPort];
         [self sessionClosed:session];
     }

@@ -31,7 +31,6 @@
 
 #import "SOCKSProxyWSAdapter.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
-#import "PSWebSocket.h"
 #import "WebsocketSession.h"
 #import "PrintHex.h"
 

@@ -36,6 +36,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     }
     return self;
 }
+
 -(instancetype)initWithMyPSWebSocket:(MyPSWebSocket*)parent
 {
     self = [super init];

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1E35F8A020CA2FFA00B20C90 /* SOCKSProxyWSAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E35F89E20CA2FFA00B20C90 /* SOCKSProxyWSAdapter.m */; };
-		1E68D04120CA35E000F2B6DE /* PrintHex.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E68D04020CA35E000F2B6DE /* PrintHex.m */; };
 		1E68D04A20CA570000F2B6DE /* WebsocketSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E68D04920CA570000F2B6DE /* WebsocketSession.m */; };
 		1E8648F920C923BA00153D85 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8648F820C923BA00153D85 /* main.m */; };
 		1E8648FC20C923BA00153D85 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8648FB20C923BA00153D85 /* AppDelegate.m */; };
@@ -16,11 +15,12 @@
 		1E86490220C923BA00153D85 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E86490020C923BA00153D85 /* Main.storyboard */; };
 		1E86490420C923BA00153D85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E86490320C923BA00153D85 /* Assets.xcassets */; };
 		1E86490720C923BA00153D85 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E86490520C923BA00153D85 /* LaunchScreen.storyboard */; };
-		1E8649C920C92D2D00153D85 /* GCDAsyncProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8649C320C92D2D00153D85 /* GCDAsyncProxySocket.m */; };
-		1E8649CB20C92D2D00153D85 /* SOCKSProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8649C620C92D2D00153D85 /* SOCKSProxy.m */; };
-		1E8649CD20C92D2D00153D85 /* SOCKSProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8649C820C92D2D00153D85 /* SOCKSProxySocket.m */; };
 		1E8649F620C942B700153D85 /* AYFlowMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8649F520C942B700153D85 /* AYFlowMgr.m */; };
 		1E8649F920C9477C00153D85 /* WebsocketAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8649F820C9477C00153D85 /* WebsocketAdapter.m */; };
+		1E8A049020D35C8000ED8B59 /* GCDAsyncProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A048A20D35C8000ED8B59 /* GCDAsyncProxySocket.m */; };
+		1E8A049120D35C8000ED8B59 /* SOCKSProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A048D20D35C8000ED8B59 /* SOCKSProxy.m */; };
+		1E8A049220D35C8000ED8B59 /* SOCKSProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A048F20D35C8000ED8B59 /* SOCKSProxySocket.m */; };
+		1E8A049620D35C8C00ED8B59 /* PrintHex.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A049520D35C8C00ED8B59 /* PrintHex.m */; };
 		379E461781E4B4F05ABBBDEB /* libPods-Client.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CC0E32173D46E92650A872C /* libPods-Client.a */; };
 /* End PBXBuildFile section */
 
@@ -28,8 +28,6 @@
 		09FE6D75DA62943C5C03FB76 /* Pods-Client.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Client.release.xcconfig"; path = "Pods/Target Support Files/Pods-Client/Pods-Client.release.xcconfig"; sourceTree = "<group>"; };
 		1E35F89E20CA2FFA00B20C90 /* SOCKSProxyWSAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxyWSAdapter.m; sourceTree = "<group>"; };
 		1E35F89F20CA2FFA00B20C90 /* SOCKSProxyWSAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxyWSAdapter.h; sourceTree = "<group>"; };
-		1E68D03F20CA35E000F2B6DE /* PrintHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintHex.h; path = Public/PrintHex.h; sourceTree = SOURCE_ROOT; };
-		1E68D04020CA35E000F2B6DE /* PrintHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrintHex.m; path = Public/PrintHex.m; sourceTree = SOURCE_ROOT; };
 		1E68D04820CA570000F2B6DE /* WebsocketSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebsocketSession.h; sourceTree = "<group>"; };
 		1E68D04920CA570000F2B6DE /* WebsocketSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsocketSession.m; sourceTree = "<group>"; };
 		1E8648F420C923BA00153D85 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,52 +41,19 @@
 		1E86490620C923BA00153D85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1E86490820C923BA00153D85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E86497020C9294C00153D85 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		1E86499020C92B9200153D85 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		1E86499120C92B9200153D85 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		1E86499420C92B9200153D85 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1E86499620C92B9200153D85 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		1E86499720C92B9200153D85 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		1E86499920C92B9200153D85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1E86499C20C92B9300153D85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		1E86499E20C92B9300153D85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E8649BE20C92D0C00153D85 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
-		1E8649C220C92D2D00153D85 /* GCDAsyncProxySocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncProxySocket.h; sourceTree = "<group>"; };
-		1E8649C320C92D2D00153D85 /* GCDAsyncProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncProxySocket.m; sourceTree = "<group>"; };
-		1E8649C520C92D2D00153D85 /* SOCKSProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxy.h; sourceTree = "<group>"; };
-		1E8649C620C92D2D00153D85 /* SOCKSProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxy.m; sourceTree = "<group>"; };
-		1E8649C720C92D2D00153D85 /* SOCKSProxySocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxySocket.h; sourceTree = "<group>"; };
-		1E8649C820C92D2D00153D85 /* SOCKSProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxySocket.m; sourceTree = "<group>"; };
-		1E8649D020C92D8D00153D85 /* PocketSocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PocketSocket-Prefix.pch"; sourceTree = "<group>"; };
-		1E8649D120C92D8D00153D85 /* PSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocket.h; sourceTree = "<group>"; };
-		1E8649D220C92D8D00153D85 /* PSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocket.m; sourceTree = "<group>"; };
-		1E8649D320C92D8D00153D85 /* PSWebSocketBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketBuffer.h; sourceTree = "<group>"; };
-		1E8649D420C92D8D00153D85 /* PSWebSocketBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketBuffer.m; sourceTree = "<group>"; };
-		1E8649D520C92D8D00153D85 /* PSWebSocketDeflater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketDeflater.h; sourceTree = "<group>"; };
-		1E8649D620C92D8D00153D85 /* PSWebSocketDeflater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketDeflater.m; sourceTree = "<group>"; };
-		1E8649D720C92D8D00153D85 /* PSWebSocketDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketDriver.h; sourceTree = "<group>"; };
-		1E8649D820C92D8D00153D85 /* PSWebSocketDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketDriver.m; sourceTree = "<group>"; };
-		1E8649D920C92D8D00153D85 /* PSWebSocketInflater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketInflater.h; sourceTree = "<group>"; };
-		1E8649DA20C92D8D00153D85 /* PSWebSocketInflater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketInflater.m; sourceTree = "<group>"; };
-		1E8649DB20C92D8D00153D85 /* PSWebSocketInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketInternal.h; sourceTree = "<group>"; };
-		1E8649DC20C92D8D00153D85 /* PSWebSocketNetworkThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketNetworkThread.h; sourceTree = "<group>"; };
-		1E8649DD20C92D8D00153D85 /* PSWebSocketNetworkThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketNetworkThread.m; sourceTree = "<group>"; };
-		1E8649DE20C92D8D00153D85 /* PSWebSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketServer.h; sourceTree = "<group>"; };
-		1E8649DF20C92D8D00153D85 /* PSWebSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketServer.m; sourceTree = "<group>"; };
-		1E8649E020C92D8D00153D85 /* PSWebSocketTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketTypes.h; sourceTree = "<group>"; };
-		1E8649E120C92D8D00153D85 /* PSWebSocketUTF8Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSWebSocketUTF8Decoder.h; sourceTree = "<group>"; };
-		1E8649E220C92D8D00153D85 /* PSWebSocketUTF8Decoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketUTF8Decoder.m; sourceTree = "<group>"; };
-		1E8649F120C9394300153D85 /* WebsocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebsocketServer.h; sourceTree = "<group>"; };
-		1E8649F220C9394300153D85 /* WebsocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsocketServer.m; sourceTree = "<group>"; };
 		1E8649F420C942B700153D85 /* AYFlowMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AYFlowMgr.h; sourceTree = "<group>"; };
 		1E8649F520C942B700153D85 /* AYFlowMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AYFlowMgr.m; sourceTree = "<group>"; };
 		1E8649F720C9477C00153D85 /* WebsocketAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebsocketAdapter.h; sourceTree = "<group>"; };
 		1E8649F820C9477C00153D85 /* WebsocketAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsocketAdapter.m; sourceTree = "<group>"; };
-		1E8649FD20CA23B600153D85 /* SOCKSProxyOverWebsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxyOverWebsocket.h; sourceTree = "<group>"; };
-		1E8649FE20CA23B600153D85 /* SOCKSProxyOverWebsocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxyOverWebsocket.m; sourceTree = "<group>"; };
-		1E8649FF20CA23B600153D85 /* SOCKSProxySocketOverWS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxySocketOverWS.h; sourceTree = "<group>"; };
-		1E864A0020CA23B600153D85 /* SOCKSProxySocketOverWS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxySocketOverWS.m; sourceTree = "<group>"; };
-		1E864A0320CA263D00153D85 /* MyPSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPSWebSocket.h; sourceTree = "<group>"; };
-		1E864A0420CA263D00153D85 /* MyPSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPSWebSocket.m; sourceTree = "<group>"; };
+		1E8A048920D35C8000ED8B59 /* GCDAsyncProxySocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncProxySocket.h; sourceTree = "<group>"; };
+		1E8A048A20D35C8000ED8B59 /* GCDAsyncProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncProxySocket.m; sourceTree = "<group>"; };
+		1E8A048C20D35C8000ED8B59 /* SOCKSProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxy.h; sourceTree = "<group>"; };
+		1E8A048D20D35C8000ED8B59 /* SOCKSProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxy.m; sourceTree = "<group>"; };
+		1E8A048E20D35C8000ED8B59 /* SOCKSProxySocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxySocket.h; sourceTree = "<group>"; };
+		1E8A048F20D35C8000ED8B59 /* SOCKSProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxySocket.m; sourceTree = "<group>"; };
+		1E8A049420D35C8C00ED8B59 /* PrintHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintHex.h; sourceTree = "<group>"; };
+		1E8A049520D35C8C00ED8B59 /* PrintHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintHex.m; sourceTree = "<group>"; };
 		2F776742CE0D5C986BC22A72 /* Pods-ServerOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServerOSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServerOSX/Pods-ServerOSX.release.xcconfig"; sourceTree = "<group>"; };
 		3F71D25F7C4B15E5B2DA3AAC /* libPods-Server.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Server.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC0E32173D46E92650A872C /* libPods-Client.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Client.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,9 +77,7 @@
 		1E8648EB20C923BA00153D85 = {
 			isa = PBXGroup;
 			children = (
-				1E8649C020C92D2D00153D85 /* ProxyKit */,
 				1E8648F620C923BA00153D85 /* Client */,
-				1E86498F20C92B9200153D85 /* ServerOSX */,
 				1E8648F520C923BA00153D85 /* Products */,
 				A457DDA61FC3555C0C90766E /* Pods */,
 				FDB157965389EFD4AB3EB9E8 /* Frameworks */,
@@ -132,20 +95,13 @@
 		1E8648F620C923BA00153D85 /* Client */ = {
 			isa = PBXGroup;
 			children = (
-				1E68D03F20CA35E000F2B6DE /* PrintHex.h */,
-				1E68D04020CA35E000F2B6DE /* PrintHex.m */,
+				1E8A048720D35C8000ED8B59 /* ProxyKit */,
+				1E8A048520D35AC600ED8B59 /* SSOverWS */,
 				1E8648FA20C923BA00153D85 /* AppDelegate.h */,
 				1E8648FB20C923BA00153D85 /* AppDelegate.m */,
 				1E8648FD20C923BA00153D85 /* ViewController.h */,
 				1E8648FE20C923BA00153D85 /* ViewController.m */,
-				1E8649F420C942B700153D85 /* AYFlowMgr.h */,
-				1E8649F520C942B700153D85 /* AYFlowMgr.m */,
-				1E8649F720C9477C00153D85 /* WebsocketAdapter.h */,
-				1E8649F820C9477C00153D85 /* WebsocketAdapter.m */,
-				1E68D04820CA570000F2B6DE /* WebsocketSession.h */,
-				1E68D04920CA570000F2B6DE /* WebsocketSession.m */,
-				1E35F89F20CA2FFA00B20C90 /* SOCKSProxyWSAdapter.h */,
-				1E35F89E20CA2FFA00B20C90 /* SOCKSProxyWSAdapter.m */,
+				1E8A049320D35C8C00ED8B59 /* Public */,
 				1E86490020C923BA00153D85 /* Main.storyboard */,
 				1E86490320C923BA00153D85 /* Assets.xcassets */,
 				1E86490520C923BA00153D85 /* LaunchScreen.storyboard */,
@@ -163,91 +119,59 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1E86498F20C92B9200153D85 /* ServerOSX */ = {
+		1E8A048520D35AC600ED8B59 /* SSOverWS */ = {
 			isa = PBXGroup;
 			children = (
-				1E8649FD20CA23B600153D85 /* SOCKSProxyOverWebsocket.h */,
-				1E8649FE20CA23B600153D85 /* SOCKSProxyOverWebsocket.m */,
-				1E8649FF20CA23B600153D85 /* SOCKSProxySocketOverWS.h */,
-				1E864A0020CA23B600153D85 /* SOCKSProxySocketOverWS.m */,
-				1E864A0320CA263D00153D85 /* MyPSWebSocket.h */,
-				1E864A0420CA263D00153D85 /* MyPSWebSocket.m */,
-				1E8649CF20C92D8D00153D85 /* PocketSocket */,
-				1E86499020C92B9200153D85 /* AppDelegate.h */,
-				1E86499120C92B9200153D85 /* AppDelegate.m */,
-				1E8649F120C9394300153D85 /* WebsocketServer.h */,
-				1E8649F220C9394300153D85 /* WebsocketServer.m */,
-				1E86499620C92B9200153D85 /* ViewController.h */,
-				1E86499720C92B9200153D85 /* ViewController.m */,
-				1E86499920C92B9200153D85 /* Assets.xcassets */,
-				1E86499B20C92B9300153D85 /* Main.storyboard */,
-				1E86499E20C92B9300153D85 /* Info.plist */,
-				1E86499320C92B9200153D85 /* Supporting Files */,
+				1E8649F420C942B700153D85 /* AYFlowMgr.h */,
+				1E8649F520C942B700153D85 /* AYFlowMgr.m */,
+				1E8649F720C9477C00153D85 /* WebsocketAdapter.h */,
+				1E8649F820C9477C00153D85 /* WebsocketAdapter.m */,
+				1E68D04820CA570000F2B6DE /* WebsocketSession.h */,
+				1E68D04920CA570000F2B6DE /* WebsocketSession.m */,
+				1E35F89F20CA2FFA00B20C90 /* SOCKSProxyWSAdapter.h */,
+				1E35F89E20CA2FFA00B20C90 /* SOCKSProxyWSAdapter.m */,
 			);
-			path = ServerOSX;
+			name = SSOverWS;
 			sourceTree = "<group>";
 		};
-		1E86499320C92B9200153D85 /* Supporting Files */ = {
+		1E8A048720D35C8000ED8B59 /* ProxyKit */ = {
 			isa = PBXGroup;
 			children = (
-				1E86499420C92B9200153D85 /* main.m */,
+				1E8A048820D35C8000ED8B59 /* Client */,
+				1E8A048B20D35C8000ED8B59 /* Server */,
 			);
-			name = "Supporting Files";
+			name = ProxyKit;
+			path = ../../ProxyKit;
 			sourceTree = "<group>";
 		};
-		1E8649C020C92D2D00153D85 /* ProxyKit */ = {
+		1E8A048820D35C8000ED8B59 /* Client */ = {
 			isa = PBXGroup;
 			children = (
-				1E8649C120C92D2D00153D85 /* Client */,
-				1E8649C420C92D2D00153D85 /* Server */,
-			);
-			path = ProxyKit;
-			sourceTree = "<group>";
-		};
-		1E8649C120C92D2D00153D85 /* Client */ = {
-			isa = PBXGroup;
-			children = (
-				1E8649C220C92D2D00153D85 /* GCDAsyncProxySocket.h */,
-				1E8649C320C92D2D00153D85 /* GCDAsyncProxySocket.m */,
+				1E8A048920D35C8000ED8B59 /* GCDAsyncProxySocket.h */,
+				1E8A048A20D35C8000ED8B59 /* GCDAsyncProxySocket.m */,
 			);
 			path = Client;
 			sourceTree = "<group>";
 		};
-		1E8649C420C92D2D00153D85 /* Server */ = {
+		1E8A048B20D35C8000ED8B59 /* Server */ = {
 			isa = PBXGroup;
 			children = (
-				1E8649C520C92D2D00153D85 /* SOCKSProxy.h */,
-				1E8649C620C92D2D00153D85 /* SOCKSProxy.m */,
-				1E8649C720C92D2D00153D85 /* SOCKSProxySocket.h */,
-				1E8649C820C92D2D00153D85 /* SOCKSProxySocket.m */,
+				1E8A048C20D35C8000ED8B59 /* SOCKSProxy.h */,
+				1E8A048D20D35C8000ED8B59 /* SOCKSProxy.m */,
+				1E8A048E20D35C8000ED8B59 /* SOCKSProxySocket.h */,
+				1E8A048F20D35C8000ED8B59 /* SOCKSProxySocket.m */,
 			);
 			path = Server;
 			sourceTree = "<group>";
 		};
-		1E8649CF20C92D8D00153D85 /* PocketSocket */ = {
+		1E8A049320D35C8C00ED8B59 /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				1E8649D020C92D8D00153D85 /* PocketSocket-Prefix.pch */,
-				1E8649D120C92D8D00153D85 /* PSWebSocket.h */,
-				1E8649D220C92D8D00153D85 /* PSWebSocket.m */,
-				1E8649D320C92D8D00153D85 /* PSWebSocketBuffer.h */,
-				1E8649D420C92D8D00153D85 /* PSWebSocketBuffer.m */,
-				1E8649D520C92D8D00153D85 /* PSWebSocketDeflater.h */,
-				1E8649D620C92D8D00153D85 /* PSWebSocketDeflater.m */,
-				1E8649D720C92D8D00153D85 /* PSWebSocketDriver.h */,
-				1E8649D820C92D8D00153D85 /* PSWebSocketDriver.m */,
-				1E8649D920C92D8D00153D85 /* PSWebSocketInflater.h */,
-				1E8649DA20C92D8D00153D85 /* PSWebSocketInflater.m */,
-				1E8649DB20C92D8D00153D85 /* PSWebSocketInternal.h */,
-				1E8649DC20C92D8D00153D85 /* PSWebSocketNetworkThread.h */,
-				1E8649DD20C92D8D00153D85 /* PSWebSocketNetworkThread.m */,
-				1E8649DE20C92D8D00153D85 /* PSWebSocketServer.h */,
-				1E8649DF20C92D8D00153D85 /* PSWebSocketServer.m */,
-				1E8649E020C92D8D00153D85 /* PSWebSocketTypes.h */,
-				1E8649E120C92D8D00153D85 /* PSWebSocketUTF8Decoder.h */,
-				1E8649E220C92D8D00153D85 /* PSWebSocketUTF8Decoder.m */,
+				1E8A049420D35C8C00ED8B59 /* PrintHex.h */,
+				1E8A049520D35C8C00ED8B59 /* PrintHex.m */,
 			);
-			path = PocketSocket;
+			name = Public;
+			path = ../../Public;
 			sourceTree = "<group>";
 		};
 		A457DDA61FC3555C0C90766E /* Pods */ = {
@@ -400,16 +324,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E8648FF20C923BA00153D85 /* ViewController.m in Sources */,
-				1E68D04120CA35E000F2B6DE /* PrintHex.m in Sources */,
-				1E8649CD20C92D2D00153D85 /* SOCKSProxySocket.m in Sources */,
 				1E8648FC20C923BA00153D85 /* AppDelegate.m in Sources */,
 				1E8648F920C923BA00153D85 /* main.m in Sources */,
-				1E8649C920C92D2D00153D85 /* GCDAsyncProxySocket.m in Sources */,
+				1E8A049120D35C8000ED8B59 /* SOCKSProxy.m in Sources */,
 				1E8649F920C9477C00153D85 /* WebsocketAdapter.m in Sources */,
-				1E8649CB20C92D2D00153D85 /* SOCKSProxy.m in Sources */,
 				1E68D04A20CA570000F2B6DE /* WebsocketSession.m in Sources */,
+				1E8A049020D35C8000ED8B59 /* GCDAsyncProxySocket.m in Sources */,
 				1E8649F620C942B700153D85 /* AYFlowMgr.m in Sources */,
 				1E35F8A020CA2FFA00B20C90 /* SOCKSProxyWSAdapter.m in Sources */,
+				1E8A049220D35C8000ED8B59 /* SOCKSProxySocket.m in Sources */,
+				1E8A049620D35C8C00ED8B59 /* PrintHex.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,14 +354,6 @@
 				1E86490620C923BA00153D85 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		1E86499B20C92B9300153D85 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1E86499C20C92B9300153D85 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
