@@ -1,4 +1,4 @@
-## Socks5 Over Websocket
+Socks5 Over Websocket
 
 使用Websocket承载socks5协议,使内网设备成为Socks5服务器
 
@@ -8,7 +8,7 @@
  SIZE |  1  |  2  |                          |
       +-----+-----+-----+------+------+------+
 
- Note: Size is in bytes
+Note: Size is in bytes
 
 CMD:  
 	 0x00: 关闭
