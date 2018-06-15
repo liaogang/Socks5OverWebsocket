@@ -84,13 +84,15 @@
     [inner send:temp];
 }
 
--(WebsocketSession*)newConnectToRemote
+-(WebsocketSession*)createSession
 {
     WebsocketSession *session = [[WebsocketSession alloc] initWithWebSocketConnection:self];
     session.port =  portBegin;
     self.sessions[@(portBegin)] = session;
     
     portBegin++;
+    
+    
     
     return session;
 }

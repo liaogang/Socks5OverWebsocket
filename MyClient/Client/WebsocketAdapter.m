@@ -156,11 +156,7 @@
     
     
     [self.sessions removeObjectForKey:@(session.port)];
-    
 }
-
-
-
 
 @end
 

@@ -150,7 +150,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     [self.delegate websocketSession:self didWriteData:data withTag:tag];
 }
 
--(void)createRemoteSession
+-(void)establishToRemote
 {
     [_parent createRemoteSessionbySession:self];
 }

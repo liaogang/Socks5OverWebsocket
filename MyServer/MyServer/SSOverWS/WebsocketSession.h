@@ -28,13 +28,13 @@
 
 -(instancetype)initWithWebSocketConnection:(WebsocketConnection*)parent;
 
+@property (nonatomic,strong) id<WebsocketSessionDelegate> delegate;
+
 @property (nonatomic ) uint16_t port;
 
--(void)createRemoteSession;
+-(void)establishToRemote;
 
 -(void)inputData:(NSData*)data;
-
-@property (nonatomic,strong) id<WebsocketSessionDelegate> delegate;
 
 - (void) writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag ;
 - (void) readDataWithTimeout:(NSTimeInterval)timeout tag:(long)tag ;

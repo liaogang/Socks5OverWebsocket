@@ -24,7 +24,7 @@
 
 @property (nonatomic,weak) id<WebSocketConnectionDelegate> delegate;
 
--(WebsocketSession*)newConnectToRemote;
+-(WebsocketSession*)createSession;
 
 -(void)createRemoteSessionbySession:(WebsocketSession*)session;
 

@@ -23,6 +23,8 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     ReaderType readerType;
     NSUInteger readerLength;
     long readerTag;
+    
+    BOOL disconnectAfterWriting;
 }
 @property (nonatomic, strong) NSMutableData *cache;
 
@@ -65,12 +67,12 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 -(void)disconnect
 {
-    
+    [self.parent closeSession:self];
 }
 
 -(void)disconnectAfterWriting
 {
-    
+    disconnectAfterWriting = YES;
 }
 
 -(void)tryReader{
@@ -185,6 +187,10 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     
     [_parent sendData:data bySession:self];
     [self.delegate websocketSession:self didWriteData:data withTag:tag];
+    
+    if (disconnectAfterWriting) {
+        [self disconnect];
+    }
 }
 
 
