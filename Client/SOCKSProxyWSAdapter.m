@@ -48,8 +48,6 @@ static const int ddLogLevel = DDLogLevelOff;
 @property (nonatomic, strong) WebsocketSession *proxySocket;
 @property (nonatomic, strong) GCDAsyncSocket *outgoingSocket;
 
-//@property (nonatomic,strong) PSWebSocket *outgoingWebsocket;
-
 @property (nonatomic) dispatch_queue_t delegateQueue;
 @property (nonatomic) NSUInteger totalBytesWritten;
 @property (nonatomic) NSUInteger totalBytesRead;
@@ -421,8 +419,6 @@ static const int ddLogLevel = DDLogLevelOff;
     [self.proxySocket writeData:responseData withTag:SOCKS_CONNECT_REPLY];
     [self.proxySocket readDataWithTag:SOCKS_INCOMING_READ];
     
-    //[self.proxySocket writeData:responseData withTimeout:-1 tag:SOCKS_CONNECT_REPLY];
-    //[self.proxySocket readDataWithTimeout:-1 tag:SOCKS_INCOMING_READ];
 }
 
 @end
