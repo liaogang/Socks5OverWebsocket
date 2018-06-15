@@ -10,10 +10,19 @@
 
 @class PSWebSocket;
 @class WebsocketSession;
+@class WebsocketConnection;
 
-@interface MyPSWebSocket : NSObject
+@protocol WebSocketConnectionDelegate <NSObject>
+-(void)websocketConnectionDisconnected:(WebsocketConnection*)connection;
+@end
+
+
+
+@interface WebsocketConnection : NSObject
 
 -(instancetype)initWithInner:(PSWebSocket*)inner_;
+
+@property (nonatomic,weak) id<WebSocketConnectionDelegate> delegate;
 
 -(WebsocketSession*)newConnectToRemote;
 

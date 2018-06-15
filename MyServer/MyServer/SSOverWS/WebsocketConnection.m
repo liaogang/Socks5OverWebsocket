@@ -1,12 +1,12 @@
 //
-//  MyPSWebSocket.m
+//  WebsocketConnection.m
 //  Client
 //
 //  Created by liaogang on 2018/6/8.
 //  Copyright © 2018年 liaogang. All rights reserved.
 //
 
-#import "MyPSWebSocket.h"
+#import "WebsocketConnection.h"
 #import "PSWebSocket.h"
 #import "WebsocketSession.h"
 
@@ -15,7 +15,7 @@
 #define CMD_Forward 0x10
 
 
-@interface MyPSWebSocket ()
+@interface WebsocketConnection ()
 <PSWebSocketDelegate>
 {
     PSWebSocket *inner;
@@ -23,12 +23,12 @@
     uint16_t portBegin;
 }
 
-
 @property (nonatomic,strong) NSMutableDictionary<NSNumber*,WebsocketSession*> *sessions;
 
 @end
 
-@implementation MyPSWebSocket
+
+@implementation WebsocketConnection
 -(instancetype)initWithInner:(PSWebSocket*)inner_
 {
     self = [super init];
@@ -53,15 +53,7 @@
     [inner close];
 }
 
-- (void)webSocketDidOpen:(PSWebSocket *)webSocket
-{
-    
-}
 
-- (void)webSocket:(PSWebSocket *)webSocket didFailWithError:(NSError *)error
-{
-    
-}
 
 -(void)createRemoteSessionbySession:(WebsocketSession*)session
 {
@@ -94,7 +86,7 @@
 
 -(WebsocketSession*)newConnectToRemote
 {
-    WebsocketSession *session = [[WebsocketSession alloc] initWithMyPSWebSocket: self];
+    WebsocketSession *session = [[WebsocketSession alloc] initWithWebSocketConnection:self];
     session.port =  portBegin;
     self.sessions[@(portBegin)] = session;
     
@@ -168,11 +160,28 @@
 
 - (void)webSocket:(PSWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
+    NSLog(@"Websocket Connection didCloseWithCode");
     
+    NSAssert(self.delegate, @"");
+    
+    [self.delegate websocketConnectionDisconnected:self];
 }
 
 - (void)webSocketDidFlushOutput:(PSWebSocket *)webSocket
 {
     
 }
+
+- (void)webSocketDidOpen:(PSWebSocket *)webSocket
+{
+    NSLog(@"WebsocketConnection webSocketDidOpen");
+    NSAssert(false, @"never could be here");
+}
+
+- (void)webSocket:(PSWebSocket *)webSocket didFailWithError:(NSError *)error
+{
+    NSLog(@"WebsocketConnection didFailWithError");
+    [self.delegate websocketConnectionDisconnected:self];
+}
+
 @end

@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     NSUInteger readerLength;
     long readerTag;
 }
-@property (nonatomic, weak) MyPSWebSocket *parent;
+@property (nonatomic, weak) WebsocketConnection *parent;
 @property (nonatomic, strong) NSMutableData *cache;
 @end
 
@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     return self;
 }
 
--(instancetype)initWithMyPSWebSocket:(MyPSWebSocket*)parent
+-(instancetype)initWithWebSocketConnection:(WebsocketConnection*)parent
 {
     self = [super init];
     if (self) {

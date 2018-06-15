@@ -17,7 +17,7 @@
 		1E68D03C20CA322F00F2B6DE /* SOCKSProxySocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E68D03920CA322F00F2B6DE /* SOCKSProxySocket.m */; };
 		1E68D03E20CA323F00F2B6DE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E68D03D20CA323F00F2B6DE /* libz.tbd */; };
 		1E68D04420CA361D00F2B6DE /* PrintHex.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E68D04320CA361D00F2B6DE /* PrintHex.m */; };
-		1E8A046320D3583300ED8B59 /* MyPSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A045C20D3583300ED8B59 /* MyPSWebSocket.m */; };
+		1E8A046320D3583300ED8B59 /* WebsocketConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A045C20D3583300ED8B59 /* WebsocketConnection.m */; };
 		1E8A046420D3583300ED8B59 /* WebsocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A045D20D3583300ED8B59 /* WebsocketServer.m */; };
 		1E8A046520D3583300ED8B59 /* WebsocketSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A045F20D3583300ED8B59 /* WebsocketSession.m */; };
 		1E8A046620D3583300ED8B59 /* SOCKSProxyOverWebsocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A046020D3583300ED8B59 /* SOCKSProxyOverWebsocket.m */; };
@@ -53,9 +53,9 @@
 		1E68D04220CA361D00F2B6DE /* PrintHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintHex.h; path = ../../Public/PrintHex.h; sourceTree = "<group>"; };
 		1E68D04320CA361D00F2B6DE /* PrintHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrintHex.m; path = ../../Public/PrintHex.m; sourceTree = "<group>"; };
 		1E8A045920D3583200ED8B59 /* SOCKSProxyOverWebsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOCKSProxyOverWebsocket.h; sourceTree = "<group>"; };
-		1E8A045A20D3583200ED8B59 /* MyPSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPSWebSocket.h; sourceTree = "<group>"; };
+		1E8A045A20D3583200ED8B59 /* WebsocketConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebsocketConnection.h; sourceTree = "<group>"; };
 		1E8A045B20D3583300ED8B59 /* WebsocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebsocketServer.h; sourceTree = "<group>"; };
-		1E8A045C20D3583300ED8B59 /* MyPSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPSWebSocket.m; sourceTree = "<group>"; };
+		1E8A045C20D3583300ED8B59 /* WebsocketConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsocketConnection.m; sourceTree = "<group>"; };
 		1E8A045D20D3583300ED8B59 /* WebsocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsocketServer.m; sourceTree = "<group>"; };
 		1E8A045E20D3583300ED8B59 /* WebsocketSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebsocketSession.h; sourceTree = "<group>"; };
 		1E8A045F20D3583300ED8B59 /* WebsocketSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsocketSession.m; sourceTree = "<group>"; };
@@ -178,14 +178,14 @@
 		1E8A046820D3583900ED8B59 /* SSOverWS */ = {
 			isa = PBXGroup;
 			children = (
-				1E8A045A20D3583200ED8B59 /* MyPSWebSocket.h */,
-				1E8A045C20D3583300ED8B59 /* MyPSWebSocket.m */,
 				1E8A045920D3583200ED8B59 /* SOCKSProxyOverWebsocket.h */,
 				1E8A046020D3583300ED8B59 /* SOCKSProxyOverWebsocket.m */,
 				1E8A046220D3583300ED8B59 /* SOCKSProxySocketOverWS.h */,
 				1E8A046120D3583300ED8B59 /* SOCKSProxySocketOverWS.m */,
 				1E8A045B20D3583300ED8B59 /* WebsocketServer.h */,
 				1E8A045D20D3583300ED8B59 /* WebsocketServer.m */,
+				1E8A045A20D3583200ED8B59 /* WebsocketConnection.h */,
+				1E8A045C20D3583300ED8B59 /* WebsocketConnection.m */,
 				1E8A045E20D3583300ED8B59 /* WebsocketSession.h */,
 				1E8A045F20D3583300ED8B59 /* WebsocketSession.m */,
 			);
@@ -375,7 +375,7 @@
 				1E68D03A20CA322F00F2B6DE /* GCDAsyncProxySocket.m in Sources */,
 				1E8A046520D3583300ED8B59 /* WebsocketSession.m in Sources */,
 				1E68CFF720CA317000F2B6DE /* AppDelegate.m in Sources */,
-				1E8A046320D3583300ED8B59 /* MyPSWebSocket.m in Sources */,
+				1E8A046320D3583300ED8B59 /* WebsocketConnection.m in Sources */,
 				1E8A046420D3583300ED8B59 /* WebsocketServer.m in Sources */,
 				1E8A047D20D359B200ED8B59 /* PSWebSocket.m in Sources */,
 				1E68D04420CA361D00F2B6DE /* PrintHex.m in Sources */,

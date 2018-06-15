@@ -33,7 +33,7 @@
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import "PSWebSocket.h"
 #import "WebsocketServer.h"
-#import "MyPSWebSocket.h"
+#import "WebsocketConnection.h"
 #import "WebsocketSession.h"
 #import "PrintHex.h"
 
@@ -72,7 +72,7 @@ static const int ddLogLevel = DDLogLevelOff;
         self.proxySocket.delegate = self;
         self.proxySocket.delegateQueue = self.delegateQueue;
         
-        self.outgoingSocket = [[[WebsocketServer shared] pickOneDevice] newConnectToRemote];
+        self.outgoingSocket = [[[WebsocketServer shared] pickRandomConnection] newConnectToRemote];
         self.outgoingSocket.delegate = self;
         [self.outgoingSocket createRemoteSession];
         

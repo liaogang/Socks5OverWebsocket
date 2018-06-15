@@ -12,13 +12,14 @@
 
 
 @interface WebsocketServer ()
-<PSWebSocketServerDelegate>
+<PSWebSocketServerDelegate,
+WebSocketConnectionDelegate>
 
 @property (nonatomic, strong) PSWebSocketServer *server;
 
 @property (nonatomic,strong) SOCKSProxyOverWebsocket *socksServer;
 
-@property (nonatomic,strong) NSMutableSet<MyPSWebSocket*>* devices;
+@property (nonatomic,strong) NSMutableSet<WebsocketConnection*>* connections;
 
 @end
 
@@ -45,29 +46,34 @@
         [self.server start];
        
         
-        self.devices = [NSMutableSet set];
+        self.connections = [NSMutableSet set];
     }
     return self;
 }
 
 
--(MyPSWebSocket*)pickOneDevice
+-(WebsocketConnection*)pickRandomConnection
 {
-    return self.devices.anyObject;
+    return self.connections.anyObject;
 }
 
+#pragma mark - WebsocketConnectionDelegate
+
+-(void)websocketConnectionDisconnected:(WebsocketConnection*)connection
+{
+    [self.connections removeObject:connection];
+}
 
 #pragma mark - PSWebSocketServerDelegate
 
 - (void)serverDidStart:(PSWebSocketServer *)server {
     
-    NSLog(@"serverDidStart");
+    NSLog(@"Websocket server Started");
     
 }
 
 - (void)server:(PSWebSocketServer *)server didFailWithError:(NSError *)error {
     //[NSException raise:NSInternalInconsistencyException format:error.localizedDescription];
-    
 }
 
 - (void)serverDidStop:(PSWebSocketServer *)server {
@@ -75,10 +81,11 @@
 }
 
 - (void)server:(PSWebSocketServer *)server webSocketDidOpen:(PSWebSocket *)webSocket {
-    NSLog(@"webSocketDidOpen");
+    NSLog(@"WebsocketServer webSocketDidOpen");
     
-    MyPSWebSocket *device = [[MyPSWebSocket alloc] initWithInner: webSocket ];
-    [self.devices addObject:device];
+    WebsocketConnection *connection = [[WebsocketConnection alloc] initWithInner: webSocket ];
+    connection.delegate = self;
+    [self.connections addObject: connection ];
     
 }
 
@@ -86,16 +93,16 @@
     
     NSData *data = message;
     
-    NSLog(@"websocket server did receive message: %lu bytes",(unsigned long)data.length);
+    NSLog(@"error!  WebsocketServer websocket server did receive message: %lu bytes",(unsigned long)data.length);
     
 }
 
 - (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didFailWithError:(NSError *)error {
-    NSLog(@"didFailWithError");
+    NSLog(@"WebsocketServer didFailWithError");
 }
 
 - (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    NSLog(@"didCloseWithCode");
+    NSLog(@"WebsocketServer didCloseWithCode");
 }
 
 

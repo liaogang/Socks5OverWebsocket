@@ -8,13 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "PSWebSocket.h"
-#import "MyPSWebSocket.h"
+#import "WebsocketConnection.h"
 
 @interface WebsocketServer : NSObject
 +(instancetype)shared;
 -(instancetype)init NS_UNAVAILABLE;
 
-
--(MyPSWebSocket*)pickOneDevice;
+-(WebsocketConnection*)pickRandomConnection;
 
 @end

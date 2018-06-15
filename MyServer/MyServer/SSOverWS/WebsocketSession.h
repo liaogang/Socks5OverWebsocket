@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MyPSWebSocket.h"
+#import "WebsocketConnection.h"
 
 
 @class WebsocketSession;
@@ -19,12 +19,14 @@
 - (void) websocketSession:(WebsocketSession *)session didWriteData:(NSData *)data withTag:(long)tag;
 @end
 
-
+/**
+ *   Websocket session is tunnel in connection marked with port
+ */
 @interface WebsocketSession : NSObject
 
 -(instancetype)init NS_UNAVAILABLE;
 
--(instancetype)initWithMyPSWebSocket:(MyPSWebSocket*)parent;
+-(instancetype)initWithWebSocketConnection:(WebsocketConnection*)parent;
 
 @property (nonatomic ) uint16_t port;
 
