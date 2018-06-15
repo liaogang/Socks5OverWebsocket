@@ -14,11 +14,10 @@
 #import "SOCKSProxyWSAdapter.h"
 #import "WebsocketAdapter.h"
 
-
+NSString *wsServer;
 
 
 @interface AYFlowMgr ()
-<SRWebSocketDelegate>
 {
     UIBackgroundTaskIdentifier bgTask;
 }
@@ -30,8 +29,10 @@
 
 @implementation AYFlowMgr
 
-+(instancetype)shared
++(instancetype)setupSDKWithWebsocketUrl:(NSString*)urlstring
 {
+    wsServer = urlstring;
+    
     static AYFlowMgr *s = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -146,7 +147,7 @@
 {
     if ([self shouldKeepWebsocketAlive])
     {
-        NSURL *url = [[NSURL alloc] initWithString:@"ws://192.168.0.126:9091"];
+        NSURL *url = [[NSURL alloc] initWithString: wsServer];
         //NSURL *url = [[NSURL alloc] initWithString:@"ws://192.168.0.146:9001"];
         self.webSocket = [[SRWebSocket alloc] initWithURL:url];
         

@@ -8,8 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+//extern NSString *wsServer;
+// @"ws://192.168.0.126:9091"
+
 
 @interface AYFlowMgr : NSObject
-+(instancetype)shared;
+
++(instancetype)setupSDKWithWebsocketUrl:(NSString*)urlstring;
+
 -(instancetype)init NS_UNAVAILABLE;
 @end

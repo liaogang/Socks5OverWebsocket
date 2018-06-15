@@ -367,6 +367,8 @@ static const int ddLogLevel = DDLogLevelOff;
 	// Version    = 5 (for SOCKS5)
 	// NumMethods = 1
 	// Method     = 0 (No authentication, anonymous access)
+    
+    
     //[self.proxySocket readDataToLength:3 withTimeout:TIMEOUT_CONNECT tag:SOCKS_OPEN];
     
     [self.proxySocket readDataToLength:3 tag:SOCKS_OPEN];

@@ -54,6 +54,7 @@
 		1E8A048F20D35C8000ED8B59 /* SOCKSProxySocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOCKSProxySocket.m; sourceTree = "<group>"; };
 		1E8A049420D35C8C00ED8B59 /* PrintHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintHex.h; sourceTree = "<group>"; };
 		1E8A049520D35C8C00ED8B59 /* PrintHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintHex.m; sourceTree = "<group>"; };
+		1E8A049820D36BCD00ED8B59 /* readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = readme.txt; path = ../readme.txt; sourceTree = "<group>"; };
 		2F776742CE0D5C986BC22A72 /* Pods-ServerOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServerOSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServerOSX/Pods-ServerOSX.release.xcconfig"; sourceTree = "<group>"; };
 		3F71D25F7C4B15E5B2DA3AAC /* libPods-Server.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Server.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC0E32173D46E92650A872C /* libPods-Client.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Client.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +78,7 @@
 		1E8648EB20C923BA00153D85 = {
 			isa = PBXGroup;
 			children = (
+				1E8A049820D36BCD00ED8B59 /* readme.txt */,
 				1E8648F620C923BA00153D85 /* Client */,
 				1E8648F520C923BA00153D85 /* Products */,
 				A457DDA61FC3555C0C90766E /* Pods */,
@@ -95,13 +97,13 @@
 		1E8648F620C923BA00153D85 /* Client */ = {
 			isa = PBXGroup;
 			children = (
+				1E8A049320D35C8C00ED8B59 /* Public */,
 				1E8A048720D35C8000ED8B59 /* ProxyKit */,
 				1E8A048520D35AC600ED8B59 /* SSOverWS */,
 				1E8648FA20C923BA00153D85 /* AppDelegate.h */,
 				1E8648FB20C923BA00153D85 /* AppDelegate.m */,
 				1E8648FD20C923BA00153D85 /* ViewController.h */,
 				1E8648FE20C923BA00153D85 /* ViewController.m */,
-				1E8A049320D35C8C00ED8B59 /* Public */,
 				1E86490020C923BA00153D85 /* Main.storyboard */,
 				1E86490320C923BA00153D85 /* Assets.xcassets */,
 				1E86490520C923BA00153D85 /* LaunchScreen.storyboard */,
