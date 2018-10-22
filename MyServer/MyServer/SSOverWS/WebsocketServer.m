@@ -19,7 +19,6 @@ WebSocketConnectionDelegate>
 
 @property (nonatomic,strong) SOCKSProxyOverWebsocket *socksServer;
 
-@property (nonatomic,strong) NSMutableSet<WebsocketConnection*>* connections;
 
 @end
 
@@ -35,7 +34,6 @@ WebSocketConnectionDelegate>
 }
 
 
-
 - (instancetype)initPrivate
 {
     self = [super init];
@@ -44,16 +42,16 @@ WebSocketConnectionDelegate>
         self.server = [PSWebSocketServer serverWithHost:@"0.0.0.0" port:9091];
         self.server.delegate = self;
         [self.server start];
-       
-        
+
         self.connections = [NSMutableSet set];
     }
     return self;
 }
 
 
--(WebsocketConnection*)pickRandomConnection
+-(WebsocketConnection*)chooseConnectionByClientHost:(NSString*)clientHost
 {
+    //todo ,by host
     return self.connections.anyObject;
 }
 
@@ -92,7 +90,7 @@ WebSocketConnectionDelegate>
 - (void)server:(PSWebSocketServer *)server webSocket:(PSWebSocket *)webSocket didReceiveMessage:(id)message {
     
     NSData *data = message;
-    
+
     NSLog(@"error!  WebsocketServer websocket server did receive message: %lu bytes",(unsigned long)data.length);
     
 }

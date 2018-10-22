@@ -17,7 +17,7 @@
 @end
 
 
-
+//代表一台连接的设备
 @interface WebsocketConnection : NSObject
 
 -(instancetype)initWithInner:(PSWebSocket*)inner_;
@@ -31,5 +31,9 @@
 -(void)sendData:(NSData*)data bySession:(WebsocketSession*)session;
 
 -(void)toCloseSession:(WebsocketSession*)session;
+
+@property (nonatomic ) unsigned long long totalBytesWritten;
+@property (nonatomic ) unsigned long long totalBytesRead;
+@property (nonatomic,strong) NSMutableDictionary<NSNumber*,WebsocketSession*> *sessions;
 
 @end

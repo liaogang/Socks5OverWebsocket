@@ -20,4 +20,7 @@
 
 -(void)closeSession:(WebsocketSession*)session;
 
+@property (nonatomic,strong) NSMutableDictionary<NSNumber*,WebsocketSession*> *sessions;
+@property (nonatomic ) unsigned long long totalBytesWritten;
+@property (nonatomic ) unsigned long long totalBytesRead;
 @end

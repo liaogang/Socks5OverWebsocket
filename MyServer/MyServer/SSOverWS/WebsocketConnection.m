@@ -23,8 +23,6 @@
     uint16_t portBegin;
 }
 
-@property (nonatomic,strong) NSMutableDictionary<NSNumber*,WebsocketSession*> *sessions;
-
 @end
 
 
@@ -81,6 +79,8 @@
     
     [temp appendData:data];
     
+    self.totalBytesWritten += temp.length;
+    
     [inner send:temp];
 }
 
@@ -99,6 +99,8 @@
 {
     NSData *data = message;
     
+    self.totalBytesRead += data.length;
+
 //    NSLog(@"didReceiveMessage: %lu bytes",(unsigned long)data.length);
 //    printHexData(data);
    
@@ -121,7 +123,6 @@
         WebsocketSession *session = [self findSessionByPort:destinationPort];
         
         [session inputData:sessionData];
-        
     }
     else{
         NSLog(@"Error cmd");
@@ -146,6 +147,8 @@
     [temp appendBytes:&port length:2];
     
     [inner send:temp];
+    
+    self.totalBytesWritten += temp.length;
     
     [self.sessions removeObjectForKey:@(session.port)];
 }

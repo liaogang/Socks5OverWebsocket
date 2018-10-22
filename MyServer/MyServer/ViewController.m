@@ -7,13 +7,21 @@
 //
 
 #import "ViewController.h"
+#import "SOCKSProxyOverWebsocket.h"
+#import "WebsocketServer.h"
+
+NSString *bytesDescription(unsigned long long n)
+{
+    return [NSByteCountFormatter stringFromByteCount:n countStyle:NSByteCountFormatterCountStyleFile];
+}
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Do any additional setup after loading the view.
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(actionRefresh) userInfo:nil repeats:YES];
+
 }
 
 
@@ -23,5 +31,25 @@
     // Update the view, if already loaded.
 }
 
+- (void)actionRefresh
+{
+    WebsocketConnection* connection = [WebsocketServer shared].connections.anyObject;
+    
+    
+    
+    self.uploadLabel.stringValue = bytesDescription( connection.totalBytesWritten);
+    
+    self.downloadLabel.stringValue =  bytesDescription( connection.totalBytesRead);
+    
+    self.aLabel.stringValue = [NSString stringWithFormat:@"%lu 个", connection.sessions.count ];
+    
+    
+//    self.uploadLabel.stringValue = bytesDescription( [SOCKSProxyOverWebsocket shared].totalBytesWritten);
+//
+//    self.downloadLabel.stringValue =  bytesDescription( [SOCKSProxyOverWebsocket shared].totalBytesRead);
+//
+//    self.aLabel.stringValue = [NSString stringWithFormat:@"%lu 个",[SOCKSProxyOverWebsocket shared].connectionCount];
+    
+}
 
 @end

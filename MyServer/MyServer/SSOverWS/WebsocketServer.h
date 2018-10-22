@@ -14,6 +14,11 @@
 +(instancetype)shared;
 -(instancetype)init NS_UNAVAILABLE;
 
--(WebsocketConnection*)pickRandomConnection;
+-(WebsocketConnection*)chooseConnectionByClientHost:(NSString*)clientHost;
+
+//当前连接的设备
+@property (nonatomic,strong) NSMutableSet<WebsocketConnection*>* connections;
+//@property (nonatomic ) unsigned long long totalBytesWritten;
+//@property (nonatomic ) unsigned long long totalBytesRead;
 
 @end

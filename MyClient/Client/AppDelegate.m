@@ -19,8 +19,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [AYFlowMgr setupSDKWithWebsocketUrl: @"ws://192.168.0.244:9091" ];
-    
+    [[AYFlowMgr shared] setupSDKWithWebsocketUrl: @"ws://192.168.0.244:9091"];
+
     return YES;
 }
 

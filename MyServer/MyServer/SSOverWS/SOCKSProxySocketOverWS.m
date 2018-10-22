@@ -72,7 +72,9 @@ static const int ddLogLevel = DDLogLevelOff;
         self.proxySocket.delegate = self;
         self.proxySocket.delegateQueue = self.delegateQueue;
         
-        self.outgoingSocket = [[[WebsocketServer shared] pickRandomConnection] createSession];
+        
+        
+        self.outgoingSocket = [[[WebsocketServer shared] chooseConnectionByClientHost: socket.connectedHost] createSession];
         self.outgoingSocket.delegate = self;
         [self.outgoingSocket establishToRemote];
         

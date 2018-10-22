@@ -14,7 +14,14 @@
 
 @interface AYFlowMgr : NSObject
 
-+(instancetype)setupSDKWithWebsocketUrl:(NSString*)urlstring;
-
++(instancetype)shared;
 -(instancetype)init NS_UNAVAILABLE;
+
+-(void)setupSDKWithWebsocketUrl:(NSString*)urlstring;
+
+
+-(unsigned long long)totalBytesWritten;
+-(unsigned long long)totalBytesRead;
+-(NSUInteger)activeConnections;
+
 @end

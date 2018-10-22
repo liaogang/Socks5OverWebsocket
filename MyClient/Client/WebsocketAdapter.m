@@ -16,13 +16,11 @@
 #define CMD_Forward 0x10
 
 
-
 @interface WebsocketAdapter ()
 <SRWebSocketDelegate>
 {
     SRWebSocket *inner;
 }
-@property (nonatomic,strong) NSMutableDictionary<NSNumber*,WebsocketSession*> *sessions;
 @end
 
 @implementation WebsocketAdapter
@@ -63,28 +61,25 @@
 {
     NSData *data = message;
 
+    self.totalBytesRead += data.length;
+    
     uint8_t cmd;
     memcpy(&cmd, [data bytes], 1);
 
     uint16_t rawPort ;
     memcpy(&rawPort, [data bytes]+1, 2);
     uint16_t destinationPort = NSSwapBigShortToHost(rawPort);
-    
-    
+
     NSData *sessionData = [data subdataWithRange:NSMakeRange(3, data.length - 3)];
-    
-    NSLog(@"websocket session data");
-    printHexData(sessionData);
-    
+
     if (cmd == CMD_Create )
     {
         WebsocketSession *newSession = [[WebsocketSession alloc] initWithParent:self];
         newSession.port = destinationPort;
         
         self.sessions[@(destinationPort)] = newSession;
-        
+
         [newSession inputData:sessionData];
-        
     }
     else if( cmd == CMD_Forward )
     {
@@ -101,10 +96,6 @@
     }
     
 }
-
-
-
-
 
 -(WebsocketSession *)findSessionByPort:(uint16_t)port
 {
@@ -128,8 +119,6 @@
     NSLog(@"WebSocket received pong");
 }
 
-
-
 -(void)sendData:(NSData*)data bySession:(WebsocketSession*)session
 {
     uint8_t cmd = CMD_Forward;
@@ -142,8 +131,9 @@
     [temp appendData:data];
     
     [inner send:temp];
+    
+    self.totalBytesWritten += temp.length;
 }
-
 
 -(void)closeSession:(WebsocketSession*)session
 {
@@ -156,7 +146,8 @@
     [temp appendBytes:&port length:2];
     
     [inner send:temp];
-    
+
+    self.totalBytesWritten += temp.length;
     
     [self.sessions removeObjectForKey:@(session.port)];
 }

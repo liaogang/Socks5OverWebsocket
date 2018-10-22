@@ -22,6 +22,8 @@
  */
 @interface SOCKSProxyOverWebsocket : NSObject <GCDAsyncSocketDelegate, SOCKSProxySocketDelegate>
 
++(instancetype)shared;
+
 @property (nonatomic, readonly) uint16_t listeningPort;
 @property (nonatomic, weak) id<SOCKSProxyOverWebsocketDelegate> delegate;
 @property (nonatomic) dispatch_queue_t callbackQueue;

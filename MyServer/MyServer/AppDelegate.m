@@ -20,7 +20,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
     //start socks5 server　at 9090
-    self.socksServer = [[SOCKSProxyOverWebsocket alloc] init];
+    self.socksServer = [SOCKSProxyOverWebsocket shared];
     [self.socksServer startProxyOnPort:9090];
     [self.socksServer addAuthorizedUser:@"123" password:@"123"];
     

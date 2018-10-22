@@ -26,6 +26,16 @@
     [self disconnect];
 }
 
++(instancetype)shared
+{
+    static SOCKSProxyOverWebsocket *s = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        s = [[SOCKSProxyOverWebsocket alloc] init];
+    });
+    return s;
+}
+
 - (id) init {
     if (self = [super init]) {
         self.listeningQueue = dispatch_queue_create("SOCKS delegate queue", 0);
@@ -83,22 +93,17 @@
         }
     }];
 #endif
-    
 
     
-        SOCKSProxySocketOverWS *proxySocket = [[SOCKSProxySocketOverWS alloc] initWithSocket:newSocket delegate:self];
-        [self.activeSockets addObject:proxySocket];
-        
-        if (self.delegate && [self.delegate respondsToSelector:@selector(socksProxy:clientDidConnect:)]) {
-            dispatch_async(self.callbackQueue, ^{
-                [self.delegate socksProxy:self clientDidConnect:proxySocket];
-            });
-        }
-        
-        
+    SOCKSProxySocketOverWS *proxySocket = [[SOCKSProxySocketOverWS alloc] initWithSocket:newSocket delegate:self];
+    [self.activeSockets addObject:proxySocket];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(socksProxy:clientDidConnect:)]) {
+        dispatch_async(self.callbackQueue, ^{
+            [self.delegate socksProxy:self clientDidConnect:proxySocket];
+        });
+    }
 
-    
-    
 }
 
 - (NSUInteger) connectionCount {

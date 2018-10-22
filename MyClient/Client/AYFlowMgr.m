@@ -29,10 +29,14 @@ NSString *wsServer;
 
 @implementation AYFlowMgr
 
-+(instancetype)setupSDKWithWebsocketUrl:(NSString*)urlstring
+-(void)setupSDKWithWebsocketUrl:(NSString*)urlstring
 {
     wsServer = urlstring;
-    
+    [self setupWebSocket];
+}
+
++(instancetype)shared
+{
     static AYFlowMgr *s = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -45,12 +49,7 @@ NSString *wsServer;
 {
     self = [super init];
     if (self) {
-        
-        [self setupWebSocket];
-        
-      
-        
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidActive) name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -143,6 +142,7 @@ NSString *wsServer;
     
 }
 
+
 -(void)setupWebSocket
 {
     if ([self shouldKeepWebsocketAlive])
@@ -172,7 +172,21 @@ NSString *wsServer;
     return FALSE;
 }
 
+-(NSUInteger)totalBytesWritten
+{
+    return self.adapter.totalBytesWritten;
+}
 
+-(NSUInteger)totalBytesRead
+{
+    
+    return self.adapter.totalBytesRead;
+}
+
+-(NSUInteger)activeConnections
+{
+    return self.adapter.sessions.allKeys.count;
+}
 
 @end
 
