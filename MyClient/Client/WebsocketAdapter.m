@@ -73,6 +73,9 @@
     
     NSData *sessionData = [data subdataWithRange:NSMakeRange(3, data.length - 3)];
     
+    NSLog(@"websocket session data");
+    printHexData(sessionData);
+    
     if (cmd == CMD_Create )
     {
         WebsocketSession *newSession = [[WebsocketSession alloc] initWithParent:self];

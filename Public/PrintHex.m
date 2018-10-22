@@ -10,16 +10,16 @@
 
 void printBufferToHex(Byte *buffer,int length)
 {
-    NSString *str = @"";
-    
-    for (int i = 0; i < length; i ++) {
-        str = [str stringByAppendingFormat:@" %02x", buffer[i] ];
-    }
-    
-    NSLog(@"%@",str);
+//    NSString *str = @"";
+//    
+//    for (int i = 0; i < length; i ++) {
+//        str = [str stringByAppendingFormat:@" %02x", buffer[i] ];
+//    }
+//    
+//    NSLog(@"%@",str);
 }
 
 void printHexData(NSData *data)
 {
-    printBufferToHex(data.bytes, data.length);
+//    printBufferToHex(data.bytes, data.length);
 }

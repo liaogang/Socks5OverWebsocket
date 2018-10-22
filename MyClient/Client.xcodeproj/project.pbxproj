@@ -233,7 +233,7 @@
 				TargetAttributes = {
 					1E8648F320C923BA00153D85 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = FQDT2YB7E9;
+						DevelopmentTeam = 2439H5NX36;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -456,8 +456,9 @@
 			baseConfigurationReference = C001B2E15CEA957E0D20CCE3 /* Pods-Client.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = FQDT2YB7E9;
+				DEVELOPMENT_TEAM = 2439H5NX36;
 				INFOPLIST_FILE = Client/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.abuyun.Client;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -469,8 +470,9 @@
 			baseConfigurationReference = 09FE6D75DA62943C5C03FB76 /* Pods-Client.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = FQDT2YB7E9;
+				DEVELOPMENT_TEAM = 2439H5NX36;
 				INFOPLIST_FILE = Client/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.abuyun.Client;
 				PRODUCT_NAME = "$(TARGET_NAME)";

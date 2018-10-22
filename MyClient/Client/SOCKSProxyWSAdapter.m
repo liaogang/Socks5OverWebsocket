@@ -70,7 +70,6 @@ static const int ddLogLevel = DDLogLevelOff;
         self.proxySocket = proxySocket;
         self.proxySocket.delegate = self;
 
-        
         self.outgoingSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:self.delegateQueue];
         [self socksOpen];
     }
@@ -93,7 +92,7 @@ static const int ddLogLevel = DDLogLevelOff;
 -(void)websocketSession:(WebsocketSession *)sock didReadData:(NSData *)data withTag:(long)tag
 {
     NSLog(@"read %lu bytes from tunnel %d:",(unsigned long)data.length,sock.port);
-    //printHexData(data);
+    printHexData(data);
     
     
     if (tag == SOCKS_OPEN) {
@@ -180,6 +179,7 @@ static const int ddLogLevel = DDLogLevelOff;
         }
     } else if (tag == SOCKS_CONNECT_AUTH_PASSWORD) {
         NSString *passwordString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"password: %@",passwordString);
         uint8_t success[2] = {0x01, 0x00};
         uint8_t failure[2] = {0x01, 0x00};
         NSData* responseData = nil;
@@ -307,9 +307,8 @@ static const int ddLogLevel = DDLogLevelOff;
         memcpy(byteBuffer+offset, &port, portLength);
         offset+=portLength;
         
-        NSData *data = [NSData dataWithBytesNoCopy:byteBuffer length:byteBufferLength freeWhenDone:YES];
-        
-        
+//        NSData *data = [NSData dataWithBytesNoCopy:byteBuffer length:byteBufferLength freeWhenDone:YES];
+
         [self.outgoingSocket connectToHost:self.destinationHost onPort:self.destinationPort error:&error];
     } else if (tag == SOCKS_INCOMING_READ) {
         [self.outgoingSocket writeData:data withTimeout:-1 tag:SOCKS_OUTGOING_WRITE];

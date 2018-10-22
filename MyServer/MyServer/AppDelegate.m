@@ -22,6 +22,8 @@
     //start socks5 server　at 9090
     self.socksServer = [[SOCKSProxyOverWebsocket alloc] init];
     [self.socksServer startProxyOnPort:9090];
+    [self.socksServer addAuthorizedUser:@"123" password:@"123"];
+    
     
     //websocket server at 9091
     [WebsocketServer shared];

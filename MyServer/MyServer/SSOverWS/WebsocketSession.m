@@ -139,11 +139,12 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 -(void)writeData:(NSData*)data withTag:(long)tag
 {
     NSLog(@"write %lu bytes tunnel %d: ",(unsigned long)data.length,self.port);
-    if (tag >= 10400) {
-    }
-    else{
-        printHexData(data);
-    }
+//    printHexData(data);
+//    if (tag >= 10400) {
+//    }
+//    else{
+//        printHexData(data);
+//    }
     
     
     [_parent sendData:data bySession:self];

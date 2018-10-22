@@ -91,9 +91,7 @@
     self.sessions[@(portBegin)] = session;
     
     portBegin++;
-    
-    
-    
+
     return session;
 }
 
@@ -101,8 +99,8 @@
 {
     NSData *data = message;
     
-    NSLog(@"didReceiveMessage: %lu bytes",(unsigned long)data.length);
-    //printHexData(data);
+//    NSLog(@"didReceiveMessage: %lu bytes",(unsigned long)data.length);
+//    printHexData(data);
    
     uint8_t cmd;
     memcpy(&cmd, [data bytes], 1);

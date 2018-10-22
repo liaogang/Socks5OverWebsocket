@@ -33,9 +33,9 @@ checkAuthorizationForUser:(NSString*)username
 @property (nonatomic, readonly) NSUInteger totalBytesWritten;
 @property (nonatomic, readonly) NSUInteger totalBytesRead;
 
-- (void) disconnect;
+-(void)disconnect;
 
-- (id) initWithWebSocket:(WebsocketSession *)proxySocket delegate:(id<SOCKSProxyWSAdapterDelegate>)delegate ;
+-(id)initWithWebSocket:(WebsocketSession *)proxySocket delegate:(id<SOCKSProxyWSAdapterDelegate>)delegate ;
 
 @end
 

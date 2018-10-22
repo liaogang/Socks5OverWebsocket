@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 };
 
 @interface WebsocketSession ()
+<SOCKSProxyWSAdapterDelegate>
 {
     ReaderType readerType;
     NSUInteger readerLength;
@@ -42,7 +43,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
         
         self.cache = [NSMutableData data];
         
-        self.adapter = [[SOCKSProxyWSAdapter alloc] initWithWebSocket:self delegate: nil ];
+        self.adapter = [[SOCKSProxyWSAdapter alloc] initWithWebSocket:self delegate: self ];
         
     }
     return self;
@@ -58,7 +59,7 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 //        //printHexData(data);
 //    }
     
-    //printHexData(data);
+//    printHexData(data);
     
     [self.cache appendData:data];
     
@@ -77,8 +78,11 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 -(void)tryReader{
     
-    //NSLog(@"tunnel %d, try reader, type: %lu, length:%lu,tag: %ld",self.port,(unsigned long)readerType,(unsigned long)readerLength,readerTag);
-
+//    NSLog(@"tunnel %d, try reader, type: %lu, length:%lu,tag: %ld",self.port,(unsigned long)readerType,(unsigned long)readerLength,readerTag);
+//
+//    if (readerType == 3 && readerLength == 4  && readerTag == 10200) {
+//        printf("debug\n");
+//    }
     
     NSUInteger cacheLength = self.cache.length ;
     if (readerType == Length) {
@@ -105,8 +109,8 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
             self.cache = [[self.cache subdataWithRange: NSMakeRange(readerLength, cacheLength - readerLength)] mutableCopy];
             
             //NSLog(@"cacheLength > readerLength: delegate: %@",self.delegate);
-            [self.delegate websocketSession:self didReadData:data withTag: readerTag ];
             [self resetReader];
+            [self.delegate websocketSession:self didReadData:data withTag: readerTag ];
         }
         else{
             
@@ -141,9 +145,9 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 -(void)readDataToLength:(NSUInteger)length tag:(long)tag
 {
-    NSLog(@"readDataToLength: %d,%d, %d",self.port,length, [NSThread currentThread].isMainThread);
-    
-    
+    NSLog(@"tunnel:%d read data:%lu",self.port,(unsigned long)length );
+    NSLog(@"readData with length");
+
     
     readerType = Length;
     readerLength = length;
@@ -153,14 +157,14 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 
 -(void)resetReader{
-    //NSLog(@"resetReader");
+//    NSLog(@"resetReader");
     readerType = None;
     readerLength = 0;
 }
 
 - (void)readDataWithTag:(long)tag
 {
-    //NSLog(@"readData One Time");
+//    NSLog(@"readData One Time");
     
     readerType = OneTime;
     readerLength = 0;
@@ -175,13 +179,13 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
 
 -(void)writeData:(NSData*)data withTag:(long)tag
 {
-    if (tag >= 10400) {
-        NSLog(@"write %lu bytes to tunnel: %d",(unsigned long)data.length,self.port);
-    }
-    else{
-        NSLog(@"write data to tunnel: %d",self.port);
-        //printHexData(data);
-    }
+//    if (tag >= 10400) {
+//        NSLog(@"write %lu bytes to tunnel: %d",(unsigned long)data.length,self.port);
+//    }
+//    else{
+//        NSLog(@"write data to tunnel: %d",self.port);
+//        printHexData(data);
+//    }
     
     
     
@@ -193,5 +197,17 @@ typedef NS_ENUM(NSUInteger, ReaderType) {
     }
 }
 
+- (BOOL) proxySocket:(SOCKSProxyWSAdapter*)proxySocket
+checkAuthorizationForUser:(NSString*)username
+            password:(NSString*)password
+{
+    if ([username isEqualToString:@"123"] && [password isEqualToString:@"123"]) {
+        return YES;
+    }
+    else{
+        return NO;
+    }
+
+}
 
 @end
